@@ -8,7 +8,7 @@ import {Text, StyleSheet, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import TabNavigator from 'react-native-tab-navigator';
 import HomeFragment from '../page/HomeFragment';
-import CompassFragment from '../page/CompassFragment';
+import GuysFragment from '../page/GuysFragment';
 import MeFragment from '../page/MeFragment';
 import NotifyFragment from '../page/NotificationFragment';
 import px2dp from '../util/px2dp';
@@ -49,12 +49,12 @@ export default class TabBar extends Component{
                 <TabNavigator.Item
                     tabStyle={styles.tabStyle}
                     title={tabName[1]}
-                    selected={this.state.selectedTab === 'compass'}
+                    selected={this.state.selectedTab === 'guys'}
                     selectedTitleStyle={{color: selectedColor}}
-                    renderIcon={() => <Image style={styles.tab} source={this.state.compassNormal} />}
-                    renderSelectedIcon={() => <Image style={styles.tab} source={this.state.compassSelected} />}
-                    onPress={() => this.setState({ selectedTab: 'compass' })}>
-                    {<CompassFragment />}
+                    renderIcon={() => <Image style={styles.tab} source={this.state.guysNormal} />}
+                    renderSelectedIcon={() => <Image style={styles.tab} source={this.state.guysSelected} />}
+                    onPress={() => this.setState({ selectedTab: 'guys' })}>
+                    {<GuysFragment />}
                 </TabNavigator.Item>
                 <TabNavigator.Item
                     tabStyle={styles.tabStyle}
@@ -84,8 +84,8 @@ export default class TabBar extends Component{
         const {selectedColor, normalColor} = this.props;
         Icon.getImageSource('md-home', 50, normalColor).then((source) => this.setState({ homeNormal: source }));
         Icon.getImageSource('md-home', 50, selectedColor).then((source) => this.setState({ homeSelected: source }));
-        Icon.getImageSource('md-contacts', 50, normalColor).then((source) => this.setState({ compassNormal: source }));
-        Icon.getImageSource('md-contacts', 50, selectedColor).then((source) => this.setState({ compassSelected: source }));
+        Icon.getImageSource('md-contacts', 50, normalColor).then((source) => this.setState({ guysNormal: source }));
+        Icon.getImageSource('md-contacts', 50, selectedColor).then((source) => this.setState({ guysSelected: source }));
         Icon.getImageSource('md-list', 50, normalColor).then((source) => this.setState({ notificationNormal: source }));
         Icon.getImageSource('md-list', 50, selectedColor).then((source) => this.setState({ notificationSelected: source }));
         Icon.getImageSource('md-person', 50, normalColor).then((source) => this.setState({ meNormal: source }));

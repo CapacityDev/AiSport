@@ -9,6 +9,7 @@ import theme from '../config/theme';
 import px2dp from '../util/px2dp';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import ImageButton from '../component/ImageButtonWithText';
+import SearchBar from '../component/SearchBar';
 
 const imgBtnImages = [
     require('../image/trend.png'),
@@ -29,7 +30,7 @@ export default class HomeFragment extends Component{
         return(
             <View style={styles.container}>
               <View style={styles.actionBar}>
-                  <Text style={{color: theme.actionBar.fontColor, fontSize: theme.actionBar.fontSize}}>首页</Text>
+                  <Text style={{color: theme.actionBar.fontColor, fontSize: theme.actionBar.fontSize}}>学员</Text>
               </View>
               <ScrollView refreshControl={
                   <RefreshControl
@@ -41,6 +42,9 @@ export default class HomeFragment extends Component{
                       titleColor={theme.themeColor}
                   />
               }>
+              <View>
+              <SearchBar onPress={this._searchButtonCallback.bind(this)}/>
+              </View>
               <View style={styles.imageBtnLine}>
                   {this.state.btnName.map((item, index) => {
                       return(
@@ -61,6 +65,9 @@ export default class HomeFragment extends Component{
     }
 
     componentWillMount() {
+    }
+
+    _searchButtonCallback(){
     }
 
     _onRefresh() {
