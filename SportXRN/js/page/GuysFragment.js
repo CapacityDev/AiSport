@@ -70,8 +70,8 @@ export default class HomeFragment extends Component{
                   let itemInfo = {
                       userName: entry[i].userName, // 用户名
                       userCode: entry[i].userCode, // 用户编号
-                      excDays: entry[i].excDays, // 训练天数
-                      latelyDate: entry[i].latelyDate, // 最近训练日期
+                      excDays: entry[i].excDays ? entry[i].excDays : 0, // 训练天数
+                      latelyDate: entry[i].latelyDate ? entry[i].latelyDate : 0, // 最近训练日期
                       portrait: entry[i].portrait ?  entry[i].portrait : null // 头像
                   }
                   dataBlob.push(itemInfo);
