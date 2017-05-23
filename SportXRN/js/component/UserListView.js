@@ -1,5 +1,5 @@
 /**
- * Created by Icey on 9/11/16.
+ * Created by wangdi on 9/11/16.
  */
 'use strict';
 
@@ -9,7 +9,7 @@ import px2dp from '../util/px2dp';
 import theme from '../config/theme';
 import MainPage from '../page/MainPage';
 
-export default class SimpleListView extends Component{
+export default class UserListView extends Component{
     static propTypes = {
         isRenderHeader: PropTypes.bool
     }
@@ -58,19 +58,19 @@ export default class SimpleListView extends Component{
                     flexDirection: 'row',
                     justifyContent: 'flex-start',
                     alignItems: 'center'}}>
-                    {rowData.screenshot ?
-                        <Image source={{uri: rowData.screenshot.url}}
+                    {rowData.portrait ?
+                        <Image source={{uri: rowData.portrait}}
                                style={styles.image}/>
                         :
                         <Image source={require('../image/user_article_no_data.png')}
                                style={styles.image}/>
                     }
                 </View>
-                <View style={{flex: 80, marginTop: px2dp(10)}}>
-                    <Text style={styles.content} numberOfLines={2}>{rowData.title}</Text>
+                <View style={{flex: 100, marginTop: px2dp(6)}}>
+                    <Text style={styles.content} numberOfLines={2}>{rowData.userName}</Text>
                     <View style={styles.infoBar}>
-                        <Text style={styles.infoBarText} numberOfLines={1}>{rowData.collectionCount}人收藏
-                            • {rowData.user.username} • {rowData.time}</Text>
+                        <Text style={styles.infoBarText} numberOfLines={1}>{rowData.latelyDate}</Text>
+                        <Text style={styles.infoBarText} numberOfLines={1}>{rowData.excDays}</Text>
                     </View>
                 </View>
             </View>
@@ -101,7 +101,7 @@ export default class SimpleListView extends Component{
 
 const styles = StyleSheet.create({
     listView: {
-        marginTop: px2dp(15)
+        marginTop: px2dp(8)
     },
     header: {
         backgroundColor: '#fff',
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     item: {
         flexDirection: 'row',
         width: theme.screenWidth,
-        height: px2dp(80),
+        height: px2dp(60),
         backgroundColor: '#fff',
         paddingLeft: px2dp(15),
         paddingRight: px2dp(17),
@@ -124,8 +124,8 @@ const styles = StyleSheet.create({
         fontSize: px2dp(15),
     },
     image: {
-        height: px2dp(55),
-        width: px2dp(55),
+        height: px2dp(45),
+        width: px2dp(45),
         backgroundColor: '#f4f4f4',
         resizeMode: 'cover'
     },

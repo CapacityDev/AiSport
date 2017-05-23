@@ -4,126 +4,96 @@
 'use strict';
 
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, Platform, ToastAndroid, RefreshControl, ScrollView, Dimensions, PixelRatio, Alert, AlertIOS} from 'react-native';
-import theme from '../config/theme';
+import {Text, View, StyleSheet, Platform, RefreshControl, ScrollView, ToastAndroid, Image, Dimensions, PixelRatio, Alert, AlertIOS} from 'react-native';
 import px2dp from '../util/px2dp';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
-import ImageButton from '../component/ImageButtonWithText';
+import theme from '../config/theme';
 import SearchBar from '../component/SearchBar';
-
-const imgBtnImages = [
-    require('../image/trend.png'),
-    require('../image/rank.png'),
-    require('../image/hot.png')
-];
+import Swiper from 'react-native-swiper';
+import UserListView from '../component/UserListView';
 
 export default class HomeFragment extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            refreshing: false,
-            btnName: ['沸点','贡献榜','本周最热']
-        }
-    }
+  constructor(props){
+      super(props);
+      this.state = {
+          refreshing: true,
+          loadedData: false,
+          dataBlob: []
+      }
+  }
 
-    render(){
-        return(
-            <View style={styles.container}>
-              <View style={styles.actionBar}>
-                  <Text style={{color: theme.actionBar.fontColor, fontSize: theme.actionBar.fontSize}}>学员</Text>
-              </View>
-              <ScrollView refreshControl={
-                  <RefreshControl
-                      refreshing={this.state.refreshing}
-                      onRefresh={this._onRefresh.bind(this)}
-                      colors={['red','#ffd500','#0080ff','#99e600']}
-                      tintColor={theme.themeColor}
-                      title="Loading..."
-                      titleColor={theme.themeColor}
-                  />
-              }>
-              <View>
+  render(){
+      return(
+          <View style={styles.container}>
               <SearchBar onPress={this._searchButtonCallback.bind(this)}/>
-              </View>
-              <View style={styles.imageBtnLine}>
-                  {this.state.btnName.map((item, index) => {
-                      return(
-                      <ImageButton
-                          key={index}
-                          image={imgBtnImages[index]}
-                          imgSize={px2dp(35)}
-                          text={item}
-                          color="#000"
-                          btnStyle={styles.imgBtn}
-                          onPress={this._imageButtonCallback.bind(this, index)}/>
-                      )})
-                  }
-              </View>
+              <ScrollView
+                  refreshControl={
+                      <RefreshControl
+                          refreshing={this.state.refreshing}
+                          onRefresh={this._onRefresh.bind(this)}
+                          colors={['red','#ffd500','#0080ff','#99e600']}
+                          tintColor={theme.themeColor}
+                          title="Loading..."
+                          titleColor={theme.themeColor}
+                      />
+                  }>
+                  { this._renderListView() }
               </ScrollView>
-            </View>
-        );
-    }
+          </View>
+      );
+  }
 
-    componentWillMount() {
-    }
+  _onRefresh() {
+      this.setState({refreshing: true});
+      this._fetchData();
+  }
 
-    _searchButtonCallback(){
-    }
+  _searchButtonCallback(){
 
-    _onRefresh() {
-        this.setState({refreshing: true});
-    }
+  }
 
-    _imageButtonCallback(position){
-        this._alert();
-    }
+  _renderListView(){
+      if(!this.state.refreshing || this.state.loadedData) {
+          return (
+              <UserListView isRenderHeader={false} contents={this.state.dataBlob}/>
+          );
+      }
+  }
 
-    _alert(){
-        if(Platform.OS === 'android') {
-            Alert.alert(
-                'Message',
-                "This function currently isn't available",
-                [{text: 'OK', onPress: () => {}}]
-            );
-        }else if(Platform.OS === 'ios'){
-            AlertIOS.alert(
-                'Message',
-                "This function currently isn't available",
-                [{text: 'OK', onPress: () => {}}]
-            );
-        }
-    }
+  _fetchData(){
+      fetch('http://119.23.220.224:8082/sportx/user/listUserByPage.action')
+          .then((response) => response.json())
+          .then((responseData) => {
+              let entry = responseData.rows;
+              var dataBlob = [];
+
+              for(let i in entry){
+                  let itemInfo = {
+                      userName: entry[i].userName, // 用户名
+                      userCode: entry[i].userCode, // 用户编号
+                      excDays: entry[i].excDays, // 训练天数
+                      latelyDate: entry[i].latelyDate, // 最近训练日期
+                      portrait: entry[i].portrait ?  entry[i].portrait : null // 头像
+                  }
+                  dataBlob.push(itemInfo);
+              }
+
+              this.setState({
+                  dataBlob: dataBlob,
+                  loadedData: true,
+                  refreshing: false
+              });
+          }).done();
+
+  }
+
+  componentDidMount(){
+      this._fetchData();
+  }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: theme.pageBackgroundColor
-    },
-    text: {
-        color: theme.text.color,
-        fontSize: theme.text.fontSize
-    },
-    actionBar: {
-        height: theme.actionBar.height,
-        backgroundColor: theme.actionBar.backgroundColor,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingTop: (Platform.OS === 'ios') ? px2dp(20) : 0
-    },
-    image: {
-        height: px2dp(130),
-        width: Dimensions.get('window').width
-    },
-    imageBtnLine:{
-        flexDirection: 'row',
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        borderBottomWidth: 1/PixelRatio.get(),
-        borderBottomColor: '#c4c4c4'
-    },
-    imgBtn: {
-        height: px2dp(80),
-        width: Dimensions.get('window').width/3
-    }
+  container: {
+      flex: 1,
+      backgroundColor: theme.pageBackgroundColor
+  }
 });
