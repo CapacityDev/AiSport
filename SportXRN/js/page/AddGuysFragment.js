@@ -1,5 +1,6 @@
 /**
- * Created by Icey on 4/11/16.
+ * Created by Icey on 24/05/2017.
+ * 添加学员
  */
 'use strict';
 
@@ -7,17 +8,31 @@ import React, {Component} from 'react';
 import {Text, View, StyleSheet, Platform, RefreshControl, ScrollView, ToastAndroid, Image, Dimensions, PixelRatio, Alert, AlertIOS} from 'react-native';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import { Sae } from 'react-native-textinput-effects';
 import px2dp from '../util/px2dp';
 import theme from '../config/theme';
 import SearchBar from '../component/SearchBar';
 import Swiper from 'react-native-swiper';
 import UserListView from '../component/UserListView';
 
+const saeInput = (
+  <Sae
+    label={'Email Address'}
+    iconClass={FontAwesomeIcon}
+    iconName={'pencil'}
+    iconColor={'white'}
+    // TextInput props
+    autoCapitalize={'none'}
+    autoCorrect={false}
+  />
+);
+
 export default class AddGuysFragment extends Component{
   constructor(props){
       super(props);
       this.state = {
-          
+
       }
   }
 

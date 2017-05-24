@@ -4,16 +4,10 @@
  * @flow
  */
 
-import React, { Component } from 'react';
-import { AppRegistry } from 'react-native';
-import Navigation from './js/config/entry';
+ import React, {
+   AppRegistry,
+ } from 'react-native';
 
-export default class SportXRN extends Component {
-  render() {
-    return (
-      <Navigation/>
-    );
-  }
-}
+ import TextInputEffectsExample from './TextInputEffectsExample';
 
-AppRegistry.registerComponent('SportXRN', () => SportXRN);
+AppRegistry.registerComponent('SportXRN', () => TextInputEffectsExample);
