@@ -5,6 +5,8 @@
 
 import React, {Component} from 'react';
 import {Text, View, StyleSheet, Platform, RefreshControl, ScrollView, ToastAndroid, Image, Dimensions, PixelRatio, Alert, AlertIOS} from 'react-native';
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
 import px2dp from '../util/px2dp';
 import theme from '../config/theme';
 import SearchBar from '../component/SearchBar';
@@ -38,6 +40,17 @@ export default class HomeFragment extends Component{
                   }>
                   { this._renderListView() }
               </ScrollView>
+              <ActionButton buttonColor="rgba(231,76,60,1)">
+                <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
+                  <Icon name="me-create" style={styles.actionButtonIcon} />
+                </ActionButton.Item>
+                <ActionButton.Item buttonColor='#3498db' title="Notifications" onPress={() => {}}>
+                  <Icon name="me-notifications-off" style={styles.actionButtonIcon} />
+                </ActionButton.Item>
+                <ActionButton.Item buttonColor='#1abc9c' title="All Tasks" onPress={() => {}}>
+                  <Icon name="md-done-all" style={styles.actionButtonIcon} />
+                </ActionButton.Item>
+              </ActionButton>
           </View>
       );
   }
@@ -54,13 +67,13 @@ export default class HomeFragment extends Component{
   _renderListView(){
       if(!this.state.refreshing || this.state.loadedData) {
           return (
-              <UserListView isRenderHeader={false} contents={this.state.dataBlob}/>
+              <UserListView isRenderHeader={false} contents={this.state.dataBlob} />
           );
       }
   }
 
   _fetchData(){
-      fetch('http://119.23.220.224:8082/sportx/user/listUserByPage.action')
+      fetch('http://gold.xitu.io/api/v1/hot/57fa525a0e3dd90057c1e04d/android')
           .then((response) => response.json())
           .then((responseData) => {
               let entry = responseData.rows;
@@ -94,6 +107,12 @@ export default class HomeFragment extends Component{
 const styles = StyleSheet.create({
   container: {
       flex: 1,
-      backgroundColor: theme.pageBackgroundColor
+      backgroundColor: theme.pageBackgroundColor,
+      marginBottom: px2dp(62),
+  },
+  actionButtonIcon: {
+      fontSize: 20,
+      height: 22,
+      color: 'white',
   }
 });

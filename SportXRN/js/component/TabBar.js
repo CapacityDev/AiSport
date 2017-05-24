@@ -95,7 +95,7 @@ export default class TabBar extends Component{
 
 const styles = StyleSheet.create({
     tabbar: {
-        height: px2dp(52),
+        height: px2dp(62),
         alignItems:'center',
         justifyContent: 'center',
         backgroundColor: '#fff'
