@@ -29,7 +29,7 @@ export default class UserListView extends Component{
     }
 
     _itemClickCallback(rowData){
-        MainPage.switchToWebViewPage(rowData);
+        MainPage.switchToUserInfoPage(rowData);
     }
 
     _renderItem(rowData, sectionID, rowID, highlightRow){
@@ -69,8 +69,9 @@ export default class UserListView extends Component{
                 <View style={{flex: 100, marginTop: px2dp(6)}}>
                     <Text style={styles.content} numberOfLines={2}>{rowData.userName}</Text>
                     <View style={styles.infoBar}>
-                        <Text style={styles.infoBarText} numberOfLines={1}>{rowData.latelyDate}</Text>
-                        <Text style={styles.infoBarText} numberOfLines={1}>{rowData.excDays}</Text>
+                        <Text style={styles.infoBarText} numberOfLines={1}>
+                          加入 {rowData.excDays} 天     上次训练日 {rowData.latelyDate}
+                        </Text>
                     </View>
                 </View>
             </View>
@@ -81,7 +82,7 @@ export default class UserListView extends Component{
         if(this.props.isRenderHeader) {
             return (
                 <View style={styles.header}>
-                    <Text>热门文章</Text>
+                    <Text></Text>
                 </View>
             );
         }

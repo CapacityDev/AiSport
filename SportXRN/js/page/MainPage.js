@@ -6,20 +6,20 @@
 import React, {Component} from 'react';
 import {Text, View, BackAndroid, ToastAndroid} from 'react-native';
 import TabBar from '../component/TabBar';
-import WebViewPage from './WebViewPage';
+import GuysInfoPage from './GuysInfoPage';
 import IndividualPage from './IndividualPage';
 import SplashScreen from '../native_modules/SplashScreen';
 
 export default class MainScene extends Component{
     constructor(props){
         super(props);
-        MainScene.switchToWebViewPage = MainScene.switchToWebViewPage.bind(this);
+        MainScene.switchToUserInfoPage = MainScene.switchToUserInfoPage.bind(this);
         MainScene.switchToIndividualPage = MainScene.switchToIndividualPage.bind(this);
     }
 
-    static switchToWebViewPage(rowData){
+    static switchToUserInfoPage(rowData){
         this.props.navigator.push({
-            component: WebViewPage,
+            component: GuysInfoPage,
             args: {rowData: rowData}
         });
     }
