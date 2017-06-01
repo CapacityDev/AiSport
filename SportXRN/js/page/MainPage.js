@@ -8,30 +8,48 @@ import {Text, View, BackAndroid, ToastAndroid} from 'react-native';
 import TabBar from '../component/TabBar';
 import GuysInfoPage from './GuysInfoPage';
 import IndividualPage from './IndividualPage';
+import AddGuysPage from './AddGuysPage';
+import GuysSignupPage from './GuysSignupPage';
 import SplashScreen from '../native_modules/SplashScreen';
 
 export default class MainScene extends Component{
-    constructor(props){
+    constructor(props) {
         super(props);
         MainScene.switchToUserInfoPage = MainScene.switchToUserInfoPage.bind(this);
         MainScene.switchToIndividualPage = MainScene.switchToIndividualPage.bind(this);
+        MainScene.switchToAddGuysPage = MainScene.switchToAddGuysPage.bind(this);
+        MainScene.switchToGuysSignUpPage = MainScene.switchToGuysSignUpPage.bind(this);
     }
 
-    static switchToUserInfoPage(rowData){
+    static switchToGuysSignUpPage() {
+        this.props.navigator.push({
+            component: GuysSignupPage,
+            args: {}
+        });
+    }
+
+    static switchToAddGuysPage() {
+        this.props.navigator.push({
+            component: AddGuysPage,
+            args: {}
+        });
+    }
+
+    static switchToUserInfoPage(rowData) {
         this.props.navigator.push({
             component: GuysInfoPage,
             args: {rowData: rowData}
         });
     }
 
-    static switchToIndividualPage(userInfo){
+    static switchToIndividualPage(userInfo) {
         this.props.navigator.push({
             component: IndividualPage,
             args: {user: userInfo}
         });
     }
 
-    componentDidMount(){
+    componentDidMount() {
         SplashScreen.hide();
         BackAndroid.addEventListener('hardwareBackPress', function () {
             BackAndroid.exitApp(0);
@@ -39,7 +57,7 @@ export default class MainScene extends Component{
         });
     }
 
-    render(){
+    render() {
         return(
             <View style={{flex: 1, justifyContent: 'flex-end'}}>
                 <TabBar navigator={this.props.navigator}/>

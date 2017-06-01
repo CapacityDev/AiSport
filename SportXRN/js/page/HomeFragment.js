@@ -28,9 +28,6 @@ export default class HomeFragment extends Component{
     render(){
         return(
             <View style={styles.container}>
-              <View style={styles.actionBar}>
-                  <Text style={{color: theme.actionBar.fontColor, fontSize: theme.actionBar.fontSize}}>首页</Text>
-              </View>
               <ScrollView refreshControl={
                   <RefreshControl
                       refreshing={this.state.refreshing}

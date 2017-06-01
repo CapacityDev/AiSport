@@ -7,7 +7,7 @@ import ImageButton from '../component/ImageButtonWithText';
 import theme from '../config/theme';
 import px2dp from '../util/px2dp';
 
-export default class SimpleNavigationBar extends Component{
+export default class NavigationBarWithRightButton extends Component{
     static propTypes = {
         title: PropTypes.string.isRequired,
         backOnPress: PropTypes.func.isRequired
@@ -22,6 +22,7 @@ export default class SimpleNavigationBar extends Component{
                     <ImageButton icon="ios-arrow-back" color="#fff" imgSize={px2dp(25)} btnStyle={styles.imgBtn} onPress={this.props.backOnPress}/>
                 }
                 <Text style={styles.title}>{this.props.title}</Text>
+                <Text style={styles.title}>保存</Text>
             </View>
         );
     }
@@ -33,9 +34,10 @@ const styles = StyleSheet.create({
         width: theme.screenWidth,
         backgroundColor: theme.actionBar.backgroundColor,
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        justifyContent: 'space-between',
         alignItems: 'center',
         paddingTop: (Platform.OS === 'ios') ? px2dp(20) : 0,
+        paddingRight: px2dp(15)
     },
     imgBtn: {
         width: px2dp(49),

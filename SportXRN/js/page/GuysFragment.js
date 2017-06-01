@@ -12,6 +12,7 @@ import theme from '../config/theme';
 import SearchBar from '../component/SearchBar';
 import Swiper from 'react-native-swiper';
 import UserListView from '../component/UserListView';
+import MainPage from './MainPage';
 
 export default class GuysFragment extends Component{
   constructor(props){
@@ -44,15 +45,30 @@ export default class GuysFragment extends Component{
                             active={true}
                             degrees={0}
                             icon={<Icon name="md-add" style={styles.actionButtonIcon} />}
-                            onPress={() => {}}>
+                            onPress={this._addClickCallback.bind(this)}>
+              </ActionButton>
+              <ActionButton buttonColor={theme.themeColor}
+                            active={true}
+                            degrees={0}
+                            position="left"
+                            icon={<Icon name="md-add" style={styles.actionButtonIcon} />}
+                            onPress={this._testBtnClickCallback.bind(this)}>
               </ActionButton>
           </View>
       );
   }
 
+  _testBtnClickCallback() {
+      MainPage.switchToGuysSignUpPage();
+  }
+
+  _addClickCallback() {
+      MainPage.switchToAddGuysPage();
+  }
+
   _onRefresh() {
       this.setState({refreshing: true});
-      this._fetchData();
+      //this._fetchData();
   }
 
   _searchButtonCallback(){
@@ -95,7 +111,7 @@ export default class GuysFragment extends Component{
   }
 
   componentDidMount(){
-      this._fetchData();
+      //this._fetchData();
   }
 }
 
@@ -103,11 +119,11 @@ const styles = StyleSheet.create({
   container: {
       flex: 1,
       backgroundColor: theme.pageBackgroundColor,
-      marginBottom: px2dp(62),
+      marginBottom: px2dp(62)
   },
   actionButtonIcon: {
-      fontSize: 20,
-      height: 22,
-      color: 'white',
+      fontSize: 28,
+      height: 30,
+      color: 'white'
   }
 });
