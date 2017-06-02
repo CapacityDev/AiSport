@@ -9,7 +9,7 @@ import TabBar from '../component/TabBar';
 import GuysInfoPage from './GuysInfoPage';
 import IndividualPage from './IndividualPage';
 import AddGuysPage from './AddGuysPage';
-import GuysSignupPage from './GuysSignupPage';
+import GuysSignupNamePage from './GuysSignupNamePage';
 import SplashScreen from '../native_modules/SplashScreen';
 
 export default class MainScene extends Component{
@@ -18,12 +18,12 @@ export default class MainScene extends Component{
         MainScene.switchToUserInfoPage = MainScene.switchToUserInfoPage.bind(this);
         MainScene.switchToIndividualPage = MainScene.switchToIndividualPage.bind(this);
         MainScene.switchToAddGuysPage = MainScene.switchToAddGuysPage.bind(this);
-        MainScene.switchToGuysSignUpPage = MainScene.switchToGuysSignUpPage.bind(this);
+        MainScene.switchToGuysSignupNamePage = MainScene.switchToGuysSignupNamePage.bind(this);
     }
 
-    static switchToGuysSignUpPage() {
+    static switchToGuysSignupNamePage() {
         this.props.navigator.push({
-            component: GuysSignupPage,
+            component: GuysSignupNamePage,
             args: {}
         });
     }

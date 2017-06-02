@@ -17,8 +17,7 @@
     "react-native-vector-icons": "4.1.1",
     "react-native-pullrefresh-scrollview": "1.1.3",
     "react-native-action-button": "2.6.9",
-    "react-native-textinput-effects": "0.3.1",
-    "tcomb-form-native": "0.6.8"
+    "react-native-material-textfield": "file:./js/component/material-textfield/"
   },
   "devDependencies": {
     "babel-jest": "20.0.3",

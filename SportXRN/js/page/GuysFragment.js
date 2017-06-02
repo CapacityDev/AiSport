@@ -59,11 +59,11 @@ export default class GuysFragment extends Component{
   }
 
   _testBtnClickCallback() {
-      MainPage.switchToGuysSignUpPage();
+      MainPage.switchToGuysSignupNamePage();
   }
 
   _addClickCallback() {
-      MainPage.switchToAddGuysPage();
+      MainPage.switchToGuysSignupNamePage();
   }
 
   _onRefresh() {
