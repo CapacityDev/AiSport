@@ -10,6 +10,7 @@ import GuysInfoPage from './GuysInfoPage';
 import IndividualPage from './IndividualPage';
 import AddGuysPage from './AddGuysPage';
 import GuysSignupNamePage from './GuysSignupNamePage';
+import GuysSignupPhonePage from './GuysSignupPhonePage';
 import SplashScreen from '../native_modules/SplashScreen';
 
 export default class MainScene extends Component{
@@ -19,13 +20,21 @@ export default class MainScene extends Component{
         MainScene.switchToIndividualPage = MainScene.switchToIndividualPage.bind(this);
         MainScene.switchToAddGuysPage = MainScene.switchToAddGuysPage.bind(this);
         MainScene.switchToGuysSignupNamePage = MainScene.switchToGuysSignupNamePage.bind(this);
+        MainScene.switchToGuysSignupPhonePage = MainScene.switchToGuysSignupPhonePage.bind(this);
+    }
+
+    static switchToGuysSignupPhonePage() {
+      this.props.navigator.push({
+          component: GuysSignupPhonePage,
+          args: {}
+      });
     }
 
     static switchToGuysSignupNamePage() {
-        this.props.navigator.push({
-            component: GuysSignupNamePage,
-            args: {}
-        });
+      this.props.navigator.push({
+          component: GuysSignupNamePage,
+          args: {}
+      });
     }
 
     static switchToAddGuysPage() {
