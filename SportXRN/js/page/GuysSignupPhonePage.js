@@ -7,45 +7,59 @@ import ReactNative, {Text, View, ScrollView, StyleSheet, Platform, TouchableOpac
 import px2dp from '../util/px2dp';
 import theme from '../config/theme';
 import NavigationBar from '../component/SimpleNavigationBar';
+import VisibleView from '../component/VisibleView';
 import PageComponent from './BackPageComponent';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TextField } from 'react-native-material-textfield';
+import Button from 'react-native-button';
 import MainPage from './MainPage';
 
-export default class GuysSignupNamePage extends PageComponent{
+export default class GuysSignupPhonePage extends PageComponent{
     constructor(props){
         super(props);
 
         this.onChangeText = this.onChangeText.bind(this);
         this.nextstepPress = this.nextstepPress.bind(this);
 
-        this.firstnameRef = this.updateRef.bind(this, 'firstname');
-        this.lastnameRef = this.updateRef.bind(this, 'lastname');
+        this.phonenumberRef = this.updateRef.bind(this, 'phonenumber');
+        this.emailRef = this.updateRef.bind(this, 'email');
         this.nextstepbtnRef = this.updateRef.bind(this, 'nextstepbtn');
 
         this.state = {
-            firstname: '',
-            lastname: '',
-            nextstepbtncolor: theme.actionBar.backgroundColorThin,
+          phonenumber: '',
+          email: '',
+          nextstepbtncolor: theme.actionBar.backgroundColorThin,
+          phonevisible: true,
+          emailvisible: false,
         };
-        this.firstnameisright = false;// 姓氏是否合法：true-合法，false-非法
-        this.lastnameisright = false;// 名字是否合法：true-合法，false-非法
+        this.phonenumberisright = false;// 是否合法：true-合法，false-非法
+        this.emailisright = false;// 是否合法：true-合法，false-非法
         this.nextstep = false;// 是否可点击下一步：true-是，false-否
     }
 
     onChangeText(text) {
-        ['firstname', 'lastname']
+        ['phonenumber', 'email']
         .map((name) => ({ name, ref: this[name] }))
         .forEach(({ name, ref }) => {
-          if (ref.isFocused()) {
-            this.setState({ [name]: text });
-            if ('' != text) {
-              this[name + 'isright'] = true;
-            } else {
-              this[name + 'isright'] = false;
+          if (ref) {
+            if (ref.isFocused()) {
+              this.setState({ [name]: text });
+              if ('' != text) {
+                if ('phonenumber' == name) {
+                  if ( 11 == text.length ) {
+                    this[name + 'isright'] = true;
+                  } else {
+                    this[name + 'isright'] = false;
+                  }
+                } else if ('email' == name) {
+                  this[name + 'isright'] = true;
+                }
+              } else {
+                this[name + 'isright'] = false;
+              }
+              this.updateNextState();
             }
-            this.updateNextState();
           }
         });
     }
@@ -55,7 +69,7 @@ export default class GuysSignupNamePage extends PageComponent{
 
     updateNextState() {
       var validRes = false;// 校验结果，true-合法，false-非法
-      if (this.firstnameisright && this.lastnameisright) {
+      if (this.phonenumberisright || this.emailisright) {
         validRes = true;
       }
       if (validRes) {
@@ -69,17 +83,25 @@ export default class GuysSignupNamePage extends PageComponent{
       }
     }
 
+    updateRef(name, ref) {
+      this[name] = ref;
+    }
+
     nextstepPress() {
       if (this.nextstep) {
         // 跳转到下一个界面
-        MainPage.switchToGuysSignupPhonePage();
+        MainPage.switchToGuysSignupPasswordPage();
       } else {
         // 不做处理
       }
     }
 
-    updateRef(name, ref) {
-      this[name] = ref;
+    useEmailRegPress() {
+      this.setState({ phonevisible: false,  emailvisible: true });
+    }
+
+    usePhoneRegPress() {
+      this.setState({ phonevisible: true,  emailvisible: false });
     }
 
     render(){
@@ -89,33 +111,50 @@ export default class GuysSignupNamePage extends PageComponent{
             <View style={styles.container}>
                 <NavigationBar title="" backOnPress={this._handleBack.bind(this)}/>
                 <ScrollView>
-                    <View style={styles.content}>
-                        <Text style={styles.text}>您叫什么名字？</Text>
+                    <VisibleView visible={data.phonevisible} style={styles.content}>
+                        <Text style={styles.text}>您的电话号码是？</Text>
                         <TextField
                                   textColor='rgb(255, 255, 255)'
                                   tintColor='rgb(255, 255, 255)'
                                   baseColor='rgb(255, 255, 255)'
-                                  ref={this.firstnameRef}
-                                  value={data.firstname}
+                                  fontSize={px2dp(20)}
+                                  ref={this.phonenumberRef}
+                                  value={data.phonenumber}
                                   autoCorrect={false}
                                   enablesReturnKeyAutomatically={true}
                                   returnKeyType='next'
-                                  label='姓氏'
+                                  label='电话'
                                   onChangeText={this.onChangeText}
                         />
+                        <Button
+                              containerStyle={{marginTop: px2dp(10), width: px2dp(105), height: px2dp(25), borderRadius:4}}
+                              style={{fontSize: px2dp(15), color: 'white'}}
+                              onPress={() => this.useEmailRegPress()}>
+                            使用邮箱注册
+                        </Button>
+                    </VisibleView>
+                    <VisibleView visible={data.emailvisible} style={styles.content}>
+                        <Text style={styles.text}>您的邮箱是？</Text>
                         <TextField
                                   textColor='rgb(255, 255, 255)'
                                   tintColor='rgb(255, 255, 255)'
                                   baseColor='rgb(255, 255, 255)'
-                                  ref={this.lastnameRef}
-                                  value={data.lastname}
+                                  fontSize={px2dp(20)}
+                                  ref={this.emailRef}
+                                  value={data.email}
                                   autoCorrect={false}
                                   enablesReturnKeyAutomatically={true}
                                   returnKeyType='next'
-                                  label='名字'
+                                  label='邮箱'
                                   onChangeText={this.onChangeText}
                         />
-                    </View>
+                        <Button
+                              containerStyle={{marginTop: px2dp(10), width: px2dp(105), height: px2dp(25), borderRadius:4}}
+                              style={{fontSize: px2dp(15), color: 'white'}}
+                              onPress={() => this.usePhoneRegPress()}>
+                            使用手机注册
+                        </Button>
+                    </VisibleView>
                 </ScrollView>
                 <ActionButton
                             ref={this.nextstepbtnRef}

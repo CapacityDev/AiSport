@@ -9,8 +9,10 @@ import TabBar from '../component/TabBar';
 import GuysInfoPage from './GuysInfoPage';
 import IndividualPage from './IndividualPage';
 import AddGuysPage from './AddGuysPage';
+import GuysEntrancePage from './GuysEntrancePage';
 import GuysSignupNamePage from './GuysSignupNamePage';
 import GuysSignupPhonePage from './GuysSignupPhonePage';
+import GuysSignupPasswordPage from './GuysSignupPasswordPage';
 import SplashScreen from '../native_modules/SplashScreen';
 
 export default class MainScene extends Component{
@@ -19,8 +21,24 @@ export default class MainScene extends Component{
         MainScene.switchToUserInfoPage = MainScene.switchToUserInfoPage.bind(this);
         MainScene.switchToIndividualPage = MainScene.switchToIndividualPage.bind(this);
         MainScene.switchToAddGuysPage = MainScene.switchToAddGuysPage.bind(this);
-        MainScene.switchToGuysSignupNamePage = MainScene.switchToGuysSignupNamePage.bind(this);
+        MainScene.switchToGuysEntrancePage = MainScene.switchToGuysEntrancePage.bind(this);
+        MainScene.switchToRegisterPage = MainScene.switchToRegisterPage.bind(this);
         MainScene.switchToGuysSignupPhonePage = MainScene.switchToGuysSignupPhonePage.bind(this);
+        MainScene.switchToGuysSignupPasswordPage = MainScene.switchToGuysSignupPasswordPage.bind(this);
+    }
+
+    static switchToGuysSignupPasswordPage() {
+      this.props.navigator.push({
+          component: GuysSignupPasswordPage,
+          args: {}
+      });
+    }
+
+    static switchToRegisterPage() {
+      this.props.navigator.push({
+          component: GuysSignupNamePage,
+          args: {}
+      });
     }
 
     static switchToGuysSignupPhonePage() {
@@ -30,9 +48,9 @@ export default class MainScene extends Component{
       });
     }
 
-    static switchToGuysSignupNamePage() {
+    static switchToGuysEntrancePage() {
       this.props.navigator.push({
-          component: GuysSignupNamePage,
+          component: GuysEntrancePage,
           args: {}
       });
     }

@@ -10,32 +10,56 @@ import NavigationBar from '../component/SimpleNavigationBar';
 import PageComponent from './BackPageComponent';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { TextField } from 'react-native-material-textfield';
+import Button from 'react-native-button';
 import MainPage from './MainPage';
 
-export default class GuysSignupNamePage extends PageComponent{
+export default class GuysSignupPasswordPage extends PageComponent{
     constructor(props){
         super(props);
 
         this.onChangeText = this.onChangeText.bind(this);
         this.nextstepPress = this.nextstepPress.bind(this);
+        this.onAccessoryPress = this.onAccessoryPress.bind(this);
+        this.renderPasswordAccessory = this.renderPasswordAccessory.bind(this);
 
-        this.firstnameRef = this.updateRef.bind(this, 'firstname');
-        this.lastnameRef = this.updateRef.bind(this, 'lastname');
+        this.passwordRef = this.updateRef.bind(this, 'password');
         this.nextstepbtnRef = this.updateRef.bind(this, 'nextstepbtn');
 
         this.state = {
-            firstname: '',
-            lastname: '',
-            nextstepbtncolor: theme.actionBar.backgroundColorThin,
+          password: '',
+          nextstepbtncolor: theme.actionBar.backgroundColorThin,
+          secureTextEntry: true,
         };
-        this.firstnameisright = false;// 姓氏是否合法：true-合法，false-非法
-        this.lastnameisright = false;// 名字是否合法：true-合法，false-非法
+        this.passwordisright = false;// 是否合法：true-合法，false-非法
         this.nextstep = false;// 是否可点击下一步：true-是，false-否
     }
 
+    onAccessoryPress() {
+      this.setState(({ secureTextEntry }) => ({ secureTextEntry: !secureTextEntry }));
+    }
+
+    renderPasswordAccessory() {
+      let { secureTextEntry } = this.state;
+
+      let name = secureTextEntry?
+        'visibility':
+        'visibility-off';
+
+      return (
+        <MaterialIcon
+          size={24}
+          name={name}
+          color={TextField.defaultProps.baseColor}
+          onPress={this.onAccessoryPress}
+          suppressHighlighting
+        />
+      );
+    }
+
     onChangeText(text) {
-        ['firstname', 'lastname']
+        ['password']
         .map((name) => ({ name, ref: this[name] }))
         .forEach(({ name, ref }) => {
           if (ref.isFocused()) {
@@ -55,7 +79,7 @@ export default class GuysSignupNamePage extends PageComponent{
 
     updateNextState() {
       var validRes = false;// 校验结果，true-合法，false-非法
-      if (this.firstnameisright && this.lastnameisright) {
+      if (this.passwordisright) {
         validRes = true;
       }
       if (validRes) {
@@ -69,17 +93,24 @@ export default class GuysSignupNamePage extends PageComponent{
       }
     }
 
+    updateRef(name, ref) {
+      this[name] = ref;
+    }
+
     nextstepPress() {
       if (this.nextstep) {
         // 跳转到下一个界面
-        MainPage.switchToGuysSignupPhonePage();
       } else {
         // 不做处理
       }
     }
 
-    updateRef(name, ref) {
-      this[name] = ref;
+    useEmailRegPress() {
+      this.setState({ phonevisible: false,  emailvisible: true });
+    }
+
+    usePhoneRegPress() {
+      this.setState({ phonevisible: true,  emailvisible: false });
     }
 
     render(){
@@ -89,34 +120,27 @@ export default class GuysSignupNamePage extends PageComponent{
             <View style={styles.container}>
                 <NavigationBar title="" backOnPress={this._handleBack.bind(this)}/>
                 <ScrollView>
-                    <View style={styles.content}>
-                        <Text style={styles.text}>您叫什么名字？</Text>
+                    <View visible={data.phonevisible} style={styles.content}>
+                        <Text style={styles.text}>设置密码</Text>
                         <TextField
                                   textColor='rgb(255, 255, 255)'
                                   tintColor='rgb(255, 255, 255)'
                                   baseColor='rgb(255, 255, 255)'
                                   fontSize={px2dp(20)}
-                                  ref={this.firstnameRef}
-                                  value={data.firstname}
+                                  ref={this.passwordRef}
+                                  value={data.password}
+                                  secureTextEntry={data.secureTextEntry}
+                                  autoCapitalize='none'
                                   autoCorrect={false}
                                   enablesReturnKeyAutomatically={true}
-                                  returnKeyType='next'
-                                  label='姓氏'
                                   onChangeText={this.onChangeText}
-                        />
-                        <TextField
-                                  textColor='rgb(255, 255, 255)'
-                                  tintColor='rgb(255, 255, 255)'
-                                  baseColor='rgb(255, 255, 255)'
-                                  fontSize={px2dp(20)}
-                                  ref={this.lastnameRef}
-                                  value={data.lastname}
-                                  autoCorrect={false}
-                                  enablesReturnKeyAutomatically={true}
-                                  returnKeyType='next'
-                                  label='名字'
-                                  onChangeText={this.onChangeText}
-                        />
+                                  returnKeyType='done'
+                                  label='密码'
+                                  title=''
+                                  maxLength={30}
+                                  characterRestriction={20}
+                                  renderAccessory={this.renderPasswordAccessory}
+                                />
                     </View>
                 </ScrollView>
                 <ActionButton
