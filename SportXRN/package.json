@@ -19,7 +19,8 @@
     "react-native-action-button": "2.6.9",
     "react-native-material-textfield": "file:./js/component/material-textfield/",
     "react-native-button": "1.8.2",
-    "react-native-wechat": "1.9.2"
+    "react-native-wechat": "1.9.2",
+    "crypto-js": "3.1.9-1"
   },
   "devDependencies": {
     "babel-jest": "20.0.3",

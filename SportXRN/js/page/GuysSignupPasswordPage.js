@@ -13,6 +13,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { TextField } from 'react-native-material-textfield';
 import Button from 'react-native-button';
+import MD5 from 'crypto-js/md5';
+import PBKDF2 from 'crypto-js/pbkdf2';
 import MainPage from './MainPage';
 
 export default class GuysSignupPasswordPage extends PageComponent{
@@ -29,6 +31,7 @@ export default class GuysSignupPasswordPage extends PageComponent{
 
         this.state = {
           password: '',
+          message: '',
           nextstepbtncolor: theme.actionBar.backgroundColorThin,
           secureTextEntry: true,
         };
@@ -98,6 +101,9 @@ export default class GuysSignupPasswordPage extends PageComponent{
     }
 
     nextstepPress() {
+      var PBKDF2Val = PBKDF2(this.password.value(), 'pass phrase exceeds block size', { keySize: 256/32, iterations: 1200 }).toString();
+      //this.setState({ message: 'MD5: ' + MD5(this.password.value()).toString()});
+      this.setState({ message: 'PBKDF2: ' + PBKDF2Val });
       if (this.nextstep) {
         // 跳转到下一个界面
       } else {
@@ -141,6 +147,7 @@ export default class GuysSignupPasswordPage extends PageComponent{
                                   characterRestriction={20}
                                   renderAccessory={this.renderPasswordAccessory}
                                 />
+                          <Text style={styles.text}>{data.message}</Text>
                     </View>
                 </ScrollView>
                 <ActionButton
