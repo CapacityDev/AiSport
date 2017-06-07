@@ -41,10 +41,10 @@ export default class MainScene extends Component{
       });
     }
 
-    static switchToGuysSignupPhonePage() {
+    static switchToGuysSignupPhonePage(firstname, lashtname) {
       this.props.navigator.push({
           component: GuysSignupPhonePage,
-          args: {}
+          args: {firstname: firstname, lashtname: lashtname}
       });
     }
 
