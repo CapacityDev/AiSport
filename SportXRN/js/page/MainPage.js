@@ -27,10 +27,10 @@ export default class MainScene extends Component{
         MainScene.switchToGuysSignupPasswordPage = MainScene.switchToGuysSignupPasswordPage.bind(this);
     }
 
-    static switchToGuysSignupPasswordPage() {
+    static switchToGuysSignupPasswordPage(userInfo) {
       this.props.navigator.push({
           component: GuysSignupPasswordPage,
-          args: {}
+          args: { userInfo: userInfo }
       });
     }
 
@@ -41,10 +41,10 @@ export default class MainScene extends Component{
       });
     }
 
-    static switchToGuysSignupPhonePage(firstname, lashtname) {
+    static switchToGuysSignupPhonePage(userInfo) {
       this.props.navigator.push({
           component: GuysSignupPhonePage,
-          args: {firstname: firstname, lashtname: lashtname}
+          args: { userInfo: userInfo }
       });
     }
 

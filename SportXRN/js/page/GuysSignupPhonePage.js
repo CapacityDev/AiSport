@@ -36,6 +36,8 @@ export default class GuysSignupPhonePage extends PageComponent{
         this.phonenumberisright = false;// 是否合法：true-合法，false-非法
         this.emailisright = false;// 是否合法：true-合法，false-非法
         this.nextstep = false;// 是否可点击下一步：true-是，false-否
+
+        this.userInfo = props.userInfo;// 用户信息对象，用于界面之间数据交互
     }
 
     onChangeText(text) {
@@ -89,8 +91,9 @@ export default class GuysSignupPhonePage extends PageComponent{
 
     nextstepPress() {
       if (this.nextstep) {
+        this.userInfo.phoneNumber = this.phonenumber.value();
         // 跳转到下一个界面
-        MainPage.switchToGuysSignupPasswordPage();
+        MainPage.switchToGuysSignupPasswordPage(this.userInfo);
       } else {
         // 不做处理
       }

@@ -72,7 +72,8 @@ export default class GuysSignupNamePage extends PageComponent{
     nextstepPress() {
       if (this.nextstep) {
         // 跳转到下一个界面
-        MainPage.switchToGuysSignupPhonePage(this.firstname.value(), this.lashtname.value());
+        var userInfo = { firstname: this.firstname.value(), lastname: this.lastname.value() };
+        MainPage.switchToGuysSignupPhonePage(userInfo);
       } else {
         // 不做处理
       }

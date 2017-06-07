@@ -32,25 +32,25 @@ export default class GuysEntrancePage extends PageComponent{
                 <ScrollView>
                     <View visible={data.phonevisible} style={styles.content}>
                       <Button
-                            containerStyle={{paddingTop: px2dp(12), marginTop: px2dp(10), height: px2dp(45), borderRadius:50, backgroundColor: 'white'}}
+                            containerStyle={{paddingTop: px2dp(12), marginTop: px2dp(10), height: px2dp(45), borderRadius: px2dp(45), backgroundColor: 'white'}}
                             style={{fontSize: px2dp(15), color: theme.actionBar.backgroundColor}}
                             onPress={() => {}}>
                           使用微信账号登录
                       </Button>
                       <Button
-                            containerStyle={{paddingTop: px2dp(12), marginTop: px2dp(10), height: px2dp(45), borderRadius:50, backgroundColor: 'white'}}
+                            containerStyle={{paddingTop: px2dp(12), marginTop: px2dp(10), height: px2dp(45), borderRadius: px2dp(45), backgroundColor: 'white'}}
                             style={{fontSize: px2dp(15), color: theme.actionBar.backgroundColor}}
                             onPress={() => {}}>
                           使用QQ账号登录
                       </Button>
                       <Button
-                            containerStyle={{paddingTop: px2dp(12), marginTop: px2dp(10), height: px2dp(45), borderRadius:50, backgroundColor: 'white'}}
+                            containerStyle={{paddingTop: px2dp(12), marginTop: px2dp(10), height: px2dp(45), borderRadius: px2dp(45), backgroundColor: 'white'}}
                             style={{fontSize: px2dp(15), color: theme.actionBar.backgroundColor}}
                             onPress={() => {}}>
                           使用新浪微博账号登录
                       </Button>
                       <Button
-                            containerStyle={{paddingTop: px2dp(12), marginTop: px2dp(10), height: px2dp(45), borderRadius:50, backgroundColor: theme.actionBar.backgroundColor, borderWidth:px2dp(1), borderColor: 'white'}}
+                            containerStyle={{paddingTop: px2dp(12), marginTop: px2dp(10), height: px2dp(45), borderRadius: px2dp(45), backgroundColor: theme.actionBar.backgroundColor, borderWidth:px2dp(1), borderColor: 'white'}}
                             style={{fontSize: px2dp(15), color: 'white'}}
                             onPress={() => this.registerPress()}>
                           注册
