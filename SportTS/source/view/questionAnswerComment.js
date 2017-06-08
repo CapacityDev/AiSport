@@ -1,0 +1,202 @@
+import React, { Component } from 'react';
+import {
+	View,
+	Text,
+	Image,
+	StyleSheet,
+	ScrollView
+} from 'react-native';
+
+import moment from 'moment';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/Ionicons';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
+import * as CommentAction from '../action/comment';
+import Spinner from '../component/spinner';
+import EndTag from '../component/endtag';
+import Navbar from '../component/navbar';
+import SingleButton from '../component/button/single';
+import HtmlConvertor from '../component/htmlConvertor';
+import HintMessage from '../component/hintMessage';
+import { postCategory } from '../config';
+import { decodeHTML, getBloggerAvatar }  from '../common';
+import { StyleConfig, ComponentStyles, CommonStyles } from '../style';
+
+const category = postCategory.answer;
+
+class QuestionAnswerCommentPage extends Component {
+
+	constructor(props) {
+		super(props);
+		this.state = {
+			hasFocus: false
+		};
+		this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
+	}
+
+	componentDidMount() {
+		const { commentAction, question, answer, id } = this.props;
+		if(answer.CommentCounts){
+			commentAction.getCommentsByPost(category, id);
+		}
+	}
+
+	componentDidFocus() {
+		this.setState({
+			hasFocus: true
+		});
+	}
+
+	renderNavbar(){
+		const { Avatar, Author } = this.props.question;
+		return (
+			<Navbar
+				leftIconName = { Avatar }
+				leftIconOnPress={ ()=>this.props.router.pop() }
+				title={ Author }/>
+		)
+	}
+
+	renderAnswerHeader(answer){
+		const userAvatar = getBloggerAvatar(answer.AnswerUserInfo.IconName);
+		const dateAdded = moment(answer.DateAdded).startOf('minute').fromNow();
+		return (
+			<View style={[CommonStyles.flexRow, CommonStyles.flexItemsMiddle, CommonStyles.flexItemsBetween, CommonStyles.m_b_2]}>
+				<View style={[CommonStyles.flexRow, CommonStyles.flexItemsMiddle]}>
+					<Image ref={view => this.imgView=view}
+						style={ [ ComponentStyles.avatar_mini, CommonStyles.m_r_2] }
+						source={ userAvatar }>
+					</Image>
+					<Text style={ [ CommonStyles.text_danger, CommonStyles.font_xs ] }>
+						{ decodeHTML(answer.UserName) }
+					</Text>
+				</View>
+				<Text style={[CommonStyles.text_gray, CommonStyles.font_ms]}>
+					{ dateAdded }
+				</Text>
+			</View>
+		)
+	}
+
+	renderAnswerContent(answer){
+		const answerContent = answer.ConvertedContent || answer.Answer;
+		return (
+			<HtmlConvertor
+				router = { this.props.router }
+				content={ answerContent }>
+			</HtmlConvertor>
+		)
+	}
+
+    renderAnswer(){
+		const { answer } = this.props;
+        return (
+            <View style={[ ComponentStyles.list, CommonStyles.p_b_0, ComponentStyles.panel_bg ]}>
+				{ this.renderAnswerHeader(answer) }
+				{ this.renderAnswerContent(answer) }
+			</View>
+        )
+    }
+
+
+	renderCommentHeader(comment){
+		const dateAdded = moment(comment.DateAdded).startOf('minute').fromNow();	
+		return (
+			<View style={[CommonStyles.flexRow, CommonStyles.flexItemsMiddle, CommonStyles.flexItemsBetween, CommonStyles.m_b_2]}>
+				<View style={[CommonStyles.flexRow, CommonStyles.flexItemsMiddle]}>
+					<Icon 
+						name={ 'ios-return-right' }  
+						size= { StyleConfig.icon_size }
+						color={ StyleConfig.color_danger } 
+						style= {[CommonStyles.m_r_2, CommonStyles.background_transparent]}/>
+					<Text style={[ CommonStyles.font_xs, CommonStyles.text_danger ]}>
+						{ comment.PostUserName }
+					</Text>
+				</View>
+				<Text style={[CommonStyles.text_gray, CommonStyles.font_ms]}>
+					{ dateAdded }
+				</Text>
+			</View>
+		)
+	}
+
+	renderCommentContent(comment){
+		const commentContent = comment.ConvertedContent || comment.Content;
+		return (
+			<View style={[ styles.comment_content ]}>
+				<HtmlConvertor
+					router = { this.props.router }
+					content={ commentContent }>
+				</HtmlConvertor>
+			</View>
+		)
+	}
+
+    renderComment(comment, index){
+        return (
+            <View key = { index } 
+				style={[ ComponentStyles.list, CommonStyles.p_b_0 ]}>
+					{ this.renderCommentHeader(comment) }
+					{ this.renderCommentContent(comment) }
+            </View>
+        )
+    }
+
+	renderComments() {
+		const { id, comments, ui } = this.props;
+		if (this.state.hasFocus === false || ui.refreshPending !== false) {
+			return (
+				<Spinner style={ ComponentStyles.message_container }/>
+			)
+		}
+		if (comments && comments.length) {
+			return (
+				<View>
+					{
+						comments.map((comment, index)=>{
+							return this.renderComment(comment, index);
+						})
+					}
+					<EndTag/>
+				</View>
+			) 
+		}
+		return(
+			<HintMessage />
+		);
+	}
+
+	render() {
+		return (
+			<View style={ ComponentStyles.container }>
+				{ this.renderNavbar() }
+				<ScrollView 
+					showsVerticalScrollIndicator = {false}
+					showsHorizontalScrollIndicator = {false} >
+					{ this.renderAnswer() }
+					{ this.renderComments() }
+				</ScrollView>
+
+				<SingleButton 
+					position="left" 
+					onPress = { ()=>this.props.router.pop() }/>
+			</View>
+		)
+	}
+}
+
+const styles = StyleSheet.create({
+	comment_content:{
+		paddingLeft: StyleConfig.icon_size + 5
+	}
+})
+
+export default connect((state, props) => ({
+  comments : state.comment[props.id],
+  ui: state.commentListUI[props.id]
+}), dispatch => ({ 
+  commentAction : bindActionCreators(CommentAction, dispatch)
+}), null, {
+  withRef: true
+})(QuestionAnswerCommentPage);
