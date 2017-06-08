@@ -8,6 +8,8 @@ import px2dp from '../util/px2dp';
 import theme from '../config/theme';
 import NavigationBar from '../component/SimpleNavigationBar';
 import PageComponent from './BackPageComponent';
+import MainPage from './MainPage';
+import * as UserAction from '../action/user';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -15,9 +17,10 @@ import { TextField } from 'react-native-material-textfield';
 import Button from 'react-native-button';
 import MD5 from 'crypto-js/md5';
 import PBKDF2 from 'crypto-js/pbkdf2';
-import MainPage from './MainPage';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-export default class GuysSignupPasswordPage extends PageComponent{
+class GuysSignupPasswordPage extends PageComponent{
     constructor(props){
         super(props);
 
@@ -103,6 +106,8 @@ export default class GuysSignupPasswordPage extends PageComponent{
     }
 
     nextstepPress() {
+      const { userAction } = this.props;
+      userAction.getUserPwdSalt();
       var PBKDF2Val = PBKDF2(this.password.value(), 'pass phrase exceeds block size', { keySize: 256/32, iterations: 1200 }).toString();
       //this.setState({ message: 'MD5: ' + MD5(this.password.value()).toString()});
       this.setState({ message: 'PBKDF2: ' + PBKDF2Val });
@@ -166,6 +171,16 @@ export default class GuysSignupPasswordPage extends PageComponent{
         );
     }
 }
+
+export default connect((state, props) => ({
+  posts : state.post,
+  user: state.user,
+  ui: state.postListUI
+}), dispatch => ({
+  userAction : bindActionCreators(UserAction, dispatch)
+}), null, {
+  withRef: true
+})(GuysSignupPasswordPage);
 
 const styles = StyleSheet.create({
     container: {
