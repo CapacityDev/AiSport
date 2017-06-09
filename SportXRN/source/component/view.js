@@ -9,7 +9,7 @@ export default ViewPage = {
     },
     startup: ()=>{
         return {
-            component: View.Startup,
+            component: View.GuysSignupPasswordPage,
 			name: 'startup'
         }
     },
