@@ -24,7 +24,16 @@
     "react-native-wechat": "1.9.2",
     "redux": "3.6.0",
     "redux-actions": "2.0.3",
-    "react-redux": "5.0.5"
+    "react-redux": "5.0.5",
+    "react-timer-mixin": "0.13.3",
+    "@remobile/react-native-toast": "1.0.6",
+    "react-addons-pure-render-mixin": "15.5.2",
+    "redux-thunk": "2.2.0",
+    "flux-standard-action": "1.2.0",
+    "react-native-animatable": "1.2.1",
+    "entities": "1.1.1",
+    "react-native-parallax-scroll-view": "0.19.0",
+    "react-native-html-converter": "1.0.4"
   },
   "devDependencies": {
     "babel-jest": "20.0.3",

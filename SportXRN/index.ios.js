@@ -4,16 +4,9 @@
  * @flow
  */
 
-import React, { Component } from 'react';
-import { AppRegistry } from 'react-native';
-import Navigation from './js/config/entry';
-
-export default class SportXRN extends Component {
-  render() {
-    return (
-      <Navigation/>
-    );
-  }
-}
+import React, {
+  AppRegistry,
+} from 'react-native';
+import SportXRN from './source';
 
 AppRegistry.registerComponent('SportXRN', () => SportXRN);
