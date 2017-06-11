@@ -9,7 +9,7 @@ export default ViewPage = {
     },
     startup: ()=>{
         return {
-            component: View.GuysSignupPasswordPage,
+            component: View.Startup,
 			name: 'startup'
         }
     },
@@ -150,5 +150,18 @@ export default ViewPage = {
             component: View.QuestionAnswerComment,
 			name: 'questionAnswerComment'
         }
-    }
+    },
+
+    startupSportX: ()=>{
+        return {
+          component: View.SpxHome,
+          name: 'spxHome'
+        }
+    },
+    spxHomePage: ()=>{
+        return {
+          component: View.HomePage,
+          name: 'homePage'
+        }
+    },
 }

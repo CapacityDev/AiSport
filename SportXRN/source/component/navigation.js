@@ -5,12 +5,13 @@ import {
 } from 'react-native';
 import {Navigator} from 'react-native-deprecated-custom-components';
 import { connect } from 'react-redux';
+import SplashScreen from 'react-native-splash-screen';
 import Router from './router';
 import Plugin from './plugin';
 import ViewPage from './view';
 import { ComponentStyles, StyleConfig } from '../style';
 
-const defaultRoute = ViewPage.startup();
+const defaultRoute = ViewPage.startupSportX();
 
 class Navigation extends Component {
 
@@ -45,6 +46,10 @@ class Navigation extends Component {
 			return route.sceneConfig
 		}
 		return Navigator.SceneConfigs.PushFromRight
+	}
+
+	componentDidMount(){
+		SplashScreen.hide();
 	}
 
 	render() {

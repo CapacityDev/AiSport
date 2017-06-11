@@ -57,7 +57,7 @@ class GuysSignupPasswordPage extends PageComponent{
 
       return (
         <MaterialIcon
-          size={24}
+          size={32}
           name={name}
           color={TextField.defaultProps.baseColor}
           onPress={this.onAccessoryPress}

@@ -23,4 +23,7 @@ export { default as Update } from './update';
 export { default as TailSetting } from './tailSetting';
 export { default as Web } from './web';
 export { default as QuestionAnswerComment } from './questionAnswerComment';
+
 export { default as GuysSignupPasswordPage } from '../../js/page/GuysSignupPasswordPage';
+export { default as SpxHome } from './SpxHome';
+export { default as HomePage } from '../../js/page/HomeFragment';
