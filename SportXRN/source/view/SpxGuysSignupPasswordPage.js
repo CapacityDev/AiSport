@@ -106,7 +106,7 @@ class SpxGuysSignupPasswordPage extends Component {
 
     nextstepPress() {
       const { guysAction } = this.props;
-      guysAction.getUserPwdSalt();
+      var tmpdata = guysAction.getUserPwdSalt();
       var PBKDF2Val = PBKDF2(this.password.value(), 'pass phrase exceeds block size', { keySize: 256/32, iterations: 1200 }).toString();
       //this.setState({ message: 'MD5: ' + MD5(this.password.value()).toString()});
       var username = this.userInfo.firstName + this.userInfo.lastName + this.userInfo.phoneNumber;

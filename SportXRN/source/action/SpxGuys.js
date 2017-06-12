@@ -8,7 +8,7 @@ export const getUserPwdSalt = createAction(
   async()=> {
     return await guysService.getUserPwdSalt();
   },
-  ({resolved, rejected})=> {
+  ({resolved, rejected} = {})=> {
     return {
       resolved,
       rejected

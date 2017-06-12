@@ -73,6 +73,6 @@ export default  {
 	},
 
 	spxGuys: {
-		salt: "/user/signup/obtainPwdSolt.action"
+		salt: "user/signup/obtainPwdSolt.action"
 	}
 }

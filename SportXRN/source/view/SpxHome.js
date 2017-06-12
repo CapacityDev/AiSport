@@ -14,7 +14,7 @@ import NotifyFragment from '../../js/page/NotificationFragment';
 import px2dp from '../util/px2dp';
 
 
-export default class TabBar extends Component{
+export default class SpxHome extends Component{
     static defaultProps = {
         selectedColor: 'rgb(240,87,41)',
         normalColor: '#a9a9a9'
