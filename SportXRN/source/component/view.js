@@ -164,4 +164,28 @@ export default ViewPage = {
           name: 'homePage'
         }
     },
+    spxSignEntryPage: ()=>{
+        return {
+          component: View.SignEntryPage,
+          name: 'signEntryPage'
+        }
+    },
+    spxGuysSignupNamePage: ()=>{
+        return {
+          component: View.SpxGuysSignupNamePage,
+          name: 'spxGuysSignupNamePage'
+        }
+    },
+    spxGuysSignupPhonePage: ()=>{
+        return {
+          component: View.SpxGuysSignupPhonePage,
+          name: 'spxGuysSignupPhonePage'
+        }
+    },
+    spxGuysSignupPasswordPage: ()=>{
+        return {
+          component: View.SpxGuysSignupPasswordPage,
+          name: 'spxGuysSignupPasswordPage'
+        }
+    },
 }

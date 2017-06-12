@@ -9,7 +9,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import theme from '../config/theme';
 import px2dp from '../util/px2dp';
 
-export default class SpxHomeFragment extends Component{
+export default class SpxHomeFragment extends Component {
     constructor(props){
         super(props);
         this.state = {

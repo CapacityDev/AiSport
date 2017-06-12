@@ -10,8 +10,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Swiper from 'react-native-swiper';
 import px2dp from '../util/px2dp';
 import theme from '../config/theme';
-import SearchBar from '../component/SearchBar';
-import UserListView from '../component/UserListView';
+import SearchBar from '../component/SpxSearchBar';
+import UserListView from '../component/SpxUserListView';
+import ViewPage from '../component/view';
 
 export default class SpxGuysFragment extends Component{
   constructor(props){
@@ -26,47 +27,51 @@ export default class SpxGuysFragment extends Component{
   render(){
       return(
           <View style={styles.container}>
-              <SearchBar onPress={this._searchButtonCallback.bind(this)}/>
+              <SearchBar onPress={()=>this.searchButtonCallback()}/>
               <ScrollView
                   refreshControl={
                       <RefreshControl
                           refreshing={this.state.refreshing}
-                          onRefresh={this._onRefresh.bind(this)}
+                          onRefresh={()=>this.onRefresh()}
                           colors={['red','#ffd500','#0080ff','#99e600']}
                           tintColor={theme.themeColor}
                           title="Loading..."
                           titleColor={theme.themeColor}
                       />
                   }>
-                  { this._renderListView() }
+                  { this.renderListView() }
               </ScrollView>
               <ActionButton buttonColor={theme.themeColor}
                             active={true}
                             degrees={0}
                             icon={<Icon name="md-add" style={styles.actionButtonIcon} />}
-                            onPress={this._addClickCallback.bind(this)}>
+                            onPress={()=>this.testBtnClickCallback()}>
               </ActionButton>
               <ActionButton buttonColor={theme.themeColor}
                             active={true}
                             degrees={0}
                             position="left"
                             icon={<Icon name="md-add" style={styles.actionButtonIcon} />}
-                            onPress={this._testBtnClickCallback.bind(this)}>
+                            onPress={()=>this.testBtnClickCallback()}>
               </ActionButton>
           </View>
       );
   }
 
-  _onRefresh() {
+  testBtnClickCallback() {
+    this.props.router.push(ViewPage.spxSignEntryPage());
+  }
+
+  onRefresh() {
       this.setState({refreshing: true});
-      //this._fetchData();
+      //this.fetchData();
   }
 
-  _searchButtonCallback(){
+  searchButtonCallback(){
 
   }
 
-  _renderListView(){
+  renderListView(){
       if(!this.state.refreshing || this.state.loadedData) {
           return (
               <UserListView isRenderHeader={false} contents={this.state.dataBlob} />
@@ -74,7 +79,7 @@ export default class SpxGuysFragment extends Component{
       }
   }
 
-  _fetchData(){
+  fetchData(){
       fetch('http://gold.xitu.io/api/v1/hot/57fa525a0e3dd90057c1e04d/android')
           .then((response) => response.json())
           .then((responseData) => {
@@ -102,7 +107,7 @@ export default class SpxGuysFragment extends Component{
   }
 
   componentDidMount(){
-      //this._fetchData();
+      //this.fetchData();
   }
 }
 

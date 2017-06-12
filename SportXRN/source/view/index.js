@@ -26,4 +26,8 @@ export { default as QuestionAnswerComment } from './questionAnswerComment';
 
 export { default as GuysSignupPasswordPage } from '../../js/page/GuysSignupPasswordPage';
 export { default as SpxHome } from './SpxHome';
-export { default as HomePage } from '../../js/page/HomeFragment';
+export { default as HomePage } from './SpxHomeFragment';
+export { default as SignEntryPage } from './SpxSigninEntryPage';
+export { default as SpxGuysSignupNamePage } from './SpxGuysSignupNamePage';
+export { default as SpxGuysSignupPhonePage } from './SpxGuysSignupPhonePage';
+export { default as SpxGuysSignupPasswordPage } from './SpxGuysSignupPasswordPage';
