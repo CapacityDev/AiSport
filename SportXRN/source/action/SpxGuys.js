@@ -4,7 +4,7 @@ import * as guysService from '../service/SpxGuysService';
 
 // 获取用户密码加密hash盐
 export const getUserPwdSalt = createAction(
-  types.GET_USER_SALT,
+  types.SPX_GET_USER_SALT,
   async()=> {
     return await guysService.getUserPwdSalt();
   },
