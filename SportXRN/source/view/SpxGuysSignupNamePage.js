@@ -71,8 +71,8 @@ export default class SpxGuysSignupNamePage extends Component {
     nextstepPress() {
       if (this.nextstep) {
         // 跳转到下一个界面
-        var userInfo = { firstname: this.firstname.value(), lastname: this.lastname.value() };
-        this.props.router.push(ViewPage.spxGuysSignupPhonePage());
+        var userInfo = { firstName: this.firstname.value(), lastName: this.lastname.value() };
+        this.props.router.push(ViewPage.spxGuysSignupPhonePage(), { userInfo: userInfo });
       } else {
         // 不做处理
       }

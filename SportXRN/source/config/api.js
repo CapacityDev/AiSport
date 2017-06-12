@@ -70,5 +70,9 @@ export default  {
 	},
 	update: {
 		info: "http://123.56.135.166/cnblog/update?version=<%=version%>"
+	},
+
+	spxGuys: {
+		salt: "/user/signup/obtainPwdSolt.action"
 	}
 }
