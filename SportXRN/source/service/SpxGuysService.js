@@ -23,12 +23,10 @@ export function guysRegist(userInfo) {
   let fetchApi = dataApi.spxGuys.guysRegist;
   let sendObj = {};
   DataTrans.concatSendObjByObj(sendObj, userInfo, 'signupInfo');
-  let data = JSON.stringify({signupInfo: userInfo});
-  // let data = `signupInfo.userFirstName=${userInfo.userFirstName}&signupInfo.userLastName=${userInfo.userLastName}&signupInfo.phoneNo=${userInfo.phoneNo}`;
-  let headers = {
-    'Accept': 'application/json',
-    'Content-type': 'application/json'
+  let formData = new FormData();
+  let proptNames = Object.keys(sendObj);
+  for (let i=0; i<proptNames.length; i++) {
+    formData.append(proptNames[i], sendObj[proptNames[i]]);
   }
-  data = new FormData(sendObj);
-  return requestService.post(fetchApi, data, headers);
+  return requestService.post(fetchApi, formData);
 }

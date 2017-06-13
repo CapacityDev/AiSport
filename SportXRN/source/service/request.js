@@ -86,8 +86,8 @@ export function get(uri, headers = {}) {
 }
 
 export function post(uri, data = "", headers = {}) {
-	if(!headers["Content-type"]){
-		headers["Content-type"] = 'application/x-www-form-urlencoded';
+	if(!headers["Content-Type"]){
+		headers["Content-Type"] = 'application/x-www-form-urlencoded';
 	}
 	return request(uri, "POST", headers, data);
 }
