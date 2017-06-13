@@ -90,7 +90,7 @@ export default class SpxGuysSignupPhonePage extends Component {
 
     nextstepPress() {
       if (this.nextstep) {
-        this.userInfo.phoneNumber = this.phonenumber.value();
+        this.userInfo.phoneNo = this.phonenumber.value();
         // 跳转到下一个界面
         this.props.router.push(ViewPage.spxGuysSignupPasswordPage(), { userInfo: this.userInfo });
       } else {

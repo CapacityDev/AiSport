@@ -51,7 +51,7 @@ export function request(uri, type = "GET", headers = {}, data = ""){
 				if(!_.startsWith(uri, "http")){
 					uri = Config.apiDomain + uri;
 				}
-				
+
 				let fetchOption = {
 					method: type,
 					headers: headers

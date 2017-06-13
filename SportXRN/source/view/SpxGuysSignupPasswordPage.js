@@ -9,7 +9,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { TextField } from 'react-native-material-textfield';
 import Button from 'react-native-button';
-import MD5 from 'crypto-js/md5';
 import PBKDF2 from 'crypto-js/pbkdf2';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -18,6 +17,7 @@ import theme from '../config/theme';
 import ViewPage from '../component/view';
 import NavigationBar from '../component/SpxSimpleNavigationBar';
 import * as GuysAction from '../action/SpxGuys';
+import * as Encrypt from '../util/encrypt';
 
 class SpxGuysSignupPasswordPage extends Component {
     constructor(props){
@@ -105,14 +105,14 @@ class SpxGuysSignupPasswordPage extends Component {
     }
 
     nextstepPress() {
-      const { guysAction } = this.props;
-      var tmpdata = guysAction.getUserPwdSalt();
-      var PBKDF2Val = PBKDF2(this.password.value(), 'pass phrase exceeds block size', { keySize: 256/32, iterations: 1200 }).toString();
-      //this.setState({ message: 'MD5: ' + MD5(this.password.value()).toString()});
-      var username = this.userInfo.firstName + this.userInfo.lastName + this.userInfo.phoneNumber;
-      this.setState({ message: 'PBKDF2: ' + PBKDF2Val + '|' + username });
       if (this.nextstep) {
-        // 跳转到下一个界面
+        // 下一步
+        this.props.guysAction.getUserPwdSalt({
+          resolved: (data)=>{
+            this.pwdEncrypt(data);
+          },
+          rejected: (data)=>{}
+        });
       } else {
         // 不做处理
       }
@@ -122,12 +122,10 @@ class SpxGuysSignupPasswordPage extends Component {
       this.props.router.pop();
     }
 
-    useEmailRegPress() {
-      this.setState({ phonevisible: false,  emailvisible: true });
-    }
-
-    usePhoneRegPress() {
-      this.setState({ phonevisible: true,  emailvisible: false });
+    pwdEncrypt(solt) {
+      this.userInfo.encryptionSalt = solt;
+      this.userInfo.signinPwd = Encrypt.EncryptPBKDF2(this.password.value(), solt);
+      this.props.guysAction.guysRegist({ userInfo: this.userInfo });
     }
 
     render(){

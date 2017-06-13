@@ -8,13 +8,17 @@ import {Text, View, StyleSheet, Platform, RefreshControl, ScrollView, ToastAndro
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Swiper from 'react-native-swiper';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import px2dp from '../util/px2dp';
 import theme from '../config/theme';
 import SearchBar from '../component/SpxSearchBar';
 import UserListView from '../component/SpxUserListView';
 import ViewPage from '../component/view';
+import * as GuysAction from '../action/SpxGuys';
+import * as UserAction from '../action/user';
 
-export default class SpxGuysFragment extends Component{
+class SpxGuysFragment extends Component {
   constructor(props){
       super(props);
       this.state = {
@@ -59,7 +63,18 @@ export default class SpxGuysFragment extends Component{
   }
 
   testBtnClickCallback() {
-    this.props.router.push(ViewPage.spxSignEntryPage());
+    // this.props.router.push(ViewPage.spxSignEntryPage());
+    var userInfo = {};
+    userInfo.userFirstName = '张';
+    userInfo.userLastName = '三丰';
+    userInfo.phoneNo = '13546456455';
+    this.props.guysAction.guysRegist({
+      userInfo: userInfo,
+      resolved: (data)=>{
+      },
+      rejected: (data)=>{
+      }
+    });
   }
 
   onRefresh() {
@@ -110,6 +125,17 @@ export default class SpxGuysFragment extends Component{
       //this.fetchData();
   }
 }
+
+export default connect((state, props) => ({
+  posts : state.post,
+  user: state.user,
+  ui: state.postListUI
+}), dispatch => ({
+  userAction : bindActionCreators(UserAction, dispatch),
+  guysAction : bindActionCreators(GuysAction, dispatch)
+}), null, {
+  withRef: true
+})(SpxGuysFragment);
 
 const styles = StyleSheet.create({
   container: {

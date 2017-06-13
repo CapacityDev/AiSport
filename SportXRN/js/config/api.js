@@ -64,7 +64,7 @@ export default  {
 		info: "http://123.56.135.166/cnblog/update?version=<%=version%>"
 	},
 	user: {
-		salt: "/user/signup/obtainPwdSolt.action",
+		salt: "user/signup/obtainPwdSolt.action",
 
 		info: "api/Users",
 		auth: "token",

@@ -73,6 +73,8 @@ export default  {
 	},
 
 	spxGuys: {
-		salt: "user/signup/obtainPwdSolt.action"
+		salt: "user/signup/obtainPwdSolt.action",
+		usernoValid: "user/signup/usernoValid.action",
+		guysRegist: "user/signup/signup.action"
 	}
 }

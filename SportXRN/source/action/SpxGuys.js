@@ -15,3 +15,17 @@ export const getUserPwdSalt = createAction(
     }
   }
 );
+
+// 用户注册
+export const guysRegist = createAction(
+  types.SPX_GUYS_REGIST,
+  async({userInfo})=> {
+    return await guysService.guysRegist(userInfo);
+  },
+  ({resolved, rejected})=> {
+    return {
+      resolved,
+      rejected
+    }
+  }
+);
