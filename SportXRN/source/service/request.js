@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import Config, { authData } from '../config';
+import Config from '../config';
 import { Base64 } from '../common/base64';
 import * as UserService from './userService';
 
@@ -86,8 +86,8 @@ export function get(uri, headers = {}) {
 }
 
 export function post(uri, data = "", headers = {}) {
-	if(!headers["Content-Type"]){
-		headers["Content-Type"] = 'application/x-www-form-urlencoded';
+	if(!headers["Content-type"]){
+		headers["Content-type"] = 'application/x-www-form-urlencoded';
 	}
 	return request(uri, "POST", headers, data);
 }

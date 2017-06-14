@@ -7,6 +7,7 @@
 import React, {
   AppRegistry,
 } from 'react-native';
+import './shim.js';
 import SportXRN from './source';
 
 AppRegistry.registerComponent('SportXRN', () => SportXRN);

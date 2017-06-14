@@ -16,6 +16,20 @@ export const getUserPwdSalt = createAction(
   }
 );
 
+// 获取用户名加密hash盐
+export const getUserNoSalt = createAction(
+  types.SPX_GET_USER_NO_SALT,
+  async()=> {
+    return await guysService.getUserNoSalt();
+  },
+  ({resolved, rejected} = {})=> {
+    return {
+      resolved,
+      rejected
+    }
+  }
+);
+
 // 用户注册
 export const guysRegist = createAction(
   types.SPX_GUYS_REGIST,
