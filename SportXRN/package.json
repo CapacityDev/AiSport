@@ -22,7 +22,7 @@
     "lodash": "4.17.4",
     "path-browserify": "0.0.0",
     "process": "^0.11.0",
-    "public-encrypt": "file:./source/util/public-encrypt/",
+    "public-encrypt": "^4.0.0",
     "querystring-es3": "^0.2.1",
     "react": "16.0.0-alpha.6",
     "react-addons-pure-render-mixin": "15.5.2",

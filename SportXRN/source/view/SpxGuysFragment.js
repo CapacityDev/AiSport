@@ -17,7 +17,7 @@ import UserListView from '../component/SpxUserListView';
 import ViewPage from '../component/view';
 import * as GuysAction from '../action/SpxGuys';
 import * as UserAction from '../action/user';
-import PublicEncrypt from 'crypto';
+import Crypto from 'crypto';
 
 class SpxGuysFragment extends Component {
   constructor(props){
@@ -85,7 +85,7 @@ class SpxGuysFragment extends Component {
     // PublicEncrypt
     // publicKey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCT3GC9Kp67occDiBotaVs32faqe6J7ozBmrxptnDARX5/OS01MolLQBZ9WSdIcqXueLGipY3WvFHvZQWZZQXUMlkX/13wqzMMy/V/fKWxjIMTO/O/un9xEf3MRgJzWFZ/F611zU3hA43DNZPueEQzPhweF3E14r29+Pyjt4djEZQIDAQAB';
     // privateKey = 'MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAJPcYL0qnruhxwOIGi1pWzfZ9qp7onujMGavGm2cMBFfn85LTUyiUtAFn1ZJ0hype54saKljda8Ue9lBZllBdQyWRf/XfCrMwzL9X98pbGMgxM787+6f3ER/cxGAnNYVn8XrXXNTeEDjcM1k+54RDM+HB4XcTXivb34/KO3h2MRlAgMBAAECgYEAhC9nOJYKlBl7znd1V5Wxm8u7Dgw7ZSat1Y7DJKyV+GIxfn6pW1JekGQGX2Ddeww1XGG9K3mkMuIwGjiyZCb1mO7tT8qq8DWnYZ1ccdzg5IqHUpNILgkdlyho34oSQSQAcTPezmv0Ei2H9NQVoYixu4b1D3yYIlCDIaXZVcPBmMECQQDUNPm9bDoNwNP6p3V8ctb90DrgQLlPkNU8f4Gu3WHuj3qK/hbRBjRE4eL5ToVrUsviMtORZw19DbsoWEWKJ7axAkEAsl/1akKCHTqXX3cmcAf7baAA68zmxaMY3FBG2alq9U1Y82ziKZY5IMZw1AQTXQJx9cI5l9w/Q4nk/dXNVWr99QJAdQEMnlPZIpIqjy7cCZUsU2AHxnQJeQRrfmLzdx4bjDTSJWb536BjG4PM6RdRWx6YygyqOKawej4i7pjVJtrE0QJAc+ktVfaQDKRVV2Da5nQZa1xNHO2SjJ12ezvjPm/8JBk2E0EPGk0XJHgvO2bGmmsLWNL0j/08UwwZdOVpP/d9vQJBAIi/Fzhza6LEOK3tN2OYxxZa2enpm7hbngRBzFXJ6Kr9PJCgPhbUwA6O36YkaBRP/dr+2cdnqLNi0O/aadKoLes=';
-
+    console.log(Crypto.randomBytes(32).toString('hex'));
   }
 
   onRefresh() {
