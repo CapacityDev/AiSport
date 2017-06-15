@@ -15,11 +15,10 @@ import theme from '../config/theme';
 import SearchBar from '../component/SpxSearchBar';
 import UserListView from '../component/SpxUserListView';
 import ViewPage from '../component/view';
-import * as GuysAction from '../action/SpxGuys';
-import * as UserAction from '../action/user';
 import Crypto from 'crypto';
+import * as CryptoJS from 'crypto-js';
 
-class SpxGuysFragment extends Component {
+export default class SpxGuysFragment extends Component {
   constructor(props){
       super(props);
       this.state = {
@@ -73,19 +72,33 @@ class SpxGuysFragment extends Component {
     userInfo.userLastName = '三丰';
     userInfo.phoneNo = '13546456455';
 
-    // this.props.guysAction.guysRegist({
-    //   userInfo: userInfo,
-    //   resolved: (data)=>{
-    //   },
-    //   rejected: (data)=>{
-    //   }
-    // });
-
-
-    // PublicEncrypt
-    // publicKey = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCT3GC9Kp67occDiBotaVs32faqe6J7ozBmrxptnDARX5/OS01MolLQBZ9WSdIcqXueLGipY3WvFHvZQWZZQXUMlkX/13wqzMMy/V/fKWxjIMTO/O/un9xEf3MRgJzWFZ/F611zU3hA43DNZPueEQzPhweF3E14r29+Pyjt4djEZQIDAQAB';
-    // privateKey = 'MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAJPcYL0qnruhxwOIGi1pWzfZ9qp7onujMGavGm2cMBFfn85LTUyiUtAFn1ZJ0hype54saKljda8Ue9lBZllBdQyWRf/XfCrMwzL9X98pbGMgxM787+6f3ER/cxGAnNYVn8XrXXNTeEDjcM1k+54RDM+HB4XcTXivb34/KO3h2MRlAgMBAAECgYEAhC9nOJYKlBl7znd1V5Wxm8u7Dgw7ZSat1Y7DJKyV+GIxfn6pW1JekGQGX2Ddeww1XGG9K3mkMuIwGjiyZCb1mO7tT8qq8DWnYZ1ccdzg5IqHUpNILgkdlyho34oSQSQAcTPezmv0Ei2H9NQVoYixu4b1D3yYIlCDIaXZVcPBmMECQQDUNPm9bDoNwNP6p3V8ctb90DrgQLlPkNU8f4Gu3WHuj3qK/hbRBjRE4eL5ToVrUsviMtORZw19DbsoWEWKJ7axAkEAsl/1akKCHTqXX3cmcAf7baAA68zmxaMY3FBG2alq9U1Y82ziKZY5IMZw1AQTXQJx9cI5l9w/Q4nk/dXNVWr99QJAdQEMnlPZIpIqjy7cCZUsU2AHxnQJeQRrfmLzdx4bjDTSJWb536BjG4PM6RdRWx6YygyqOKawej4i7pjVJtrE0QJAc+ktVfaQDKRVV2Da5nQZa1xNHO2SjJ12ezvjPm/8JBk2E0EPGk0XJHgvO2bGmmsLWNL0j/08UwwZdOVpP/d9vQJBAIi/Fzhza6LEOK3tN2OYxxZa2enpm7hbngRBzFXJ6Kr9PJCgPhbUwA6O36YkaBRP/dr+2cdnqLNi0O/aadKoLes=';
     console.log(Crypto.randomBytes(32).toString('hex'));
+
+    let publicKey = `-----BEGIN PUBLIC KEY-----`
+    + `\n`
+    + `MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCLrkCtjNgE4dvPeRcE7sNGC7srRKG/KFtyEm2mBJKvnf3n1MgCAXJFjnLgMOEYaZSK8SfMhnVlkyop7A2Rxyo0Hid+kchDh68qlFC6qBgddMNPM5AD+cGylhzyV6Z5c9kYwfUUnTNnwifC3mWN3cLHcwH7iiUjbom6Q23i3fQsNQIDAQAB`
+    + `\n`
+    + `-----END PUBLIC KEY-----`;
+
+    let privateKey = `-----BEGIN PRIVATE KEY-----`
+    + `\n`
+    + `MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAIuuQK2M2ATh2895FwTuw0YLuytEob8oW3ISbaYEkq+d/efUyAIBckWOcuAw4RhplIrxJ8yGdWWTKinsDZHHKjQeJ36RyEOHryqUULqoGB10w08zkAP5wbKWHPJXpnlz2RjB9RSdM2fCJ8LeZY3dwsdzAfuKJSNuibpDbeLd9Cw1AgMBAAECgYALjuS9N61cYhAdT+jOuK8h6bCYOPqlZcKDYvD9zt0QeSNcfqf6OoJpLQtmb8UAjyQCh0gCzZGDUTUo+OZ6jJ96Rt7Tlu3uBkDTFlKg1bB2e4h6iUk45Kbceg4XK/PpoA/U/o6Hun1SYXXJ1hQtPvHftTObL+KdxkjgrK9dmiGFVQJBAN3LQ17+I4r3RLKkXF0iCrCTqnw8WZDEy0n9o6UTpz/iUlNf3rQSALDA1hAZ1CAY0znhK+/uAkEmVWirbaZnfB8CQQChOQpyHa6u7e7kGCIK418ZZTgnE1y249SztqPnKEva3S/HNiu2kfLbM4DZ6G9urpi70+S6Rxn1m1XdEiDuI00rAkEAuTsBl/rtGijqAbvMu6crgE7CyiDouEPyd2fR3JKuUmckVCcz6fVDCFr0K9w2UVwKRENum2GOFnT6TYEmARxaBwJAFAMnl8i1cUNZnvib6SwWFunokXkmzhDzyycFq2DmIZHJJ3pC7NOrCKiY+vOOOXf0v4Pq5XCD+WfBvcJNUiIRpwJAMJ+mroQ3TVsNSP5+ljGWLN4hbQhTwT/lW6YW49wCjBiPjtAc3Z5cDCBjNLkSVttTLgiu1Zz96cgyog5wkNPGrw==`
+    + '\n'
+    + `-----END PRIVATE KEY-----`;
+    let encrypted = Crypto.publicEncrypt({
+      padding: 1,
+      key: publicKey
+    }, new Buffer('电话覅uadsfddsf敌法阿斯顿发呆圣达菲就卡死的方法IERPG好人'), false);
+    console.log('encrypted:'+encrypted);
+
+    let decrypted = Crypto.privateDecrypt({
+      padding: 1,
+      key: privateKey
+    }, encrypted, false).toString();
+    console.log('decrypted:'+decrypted);
+
+    var encryptedPBKDF2 = CryptoJS.PBKDF2('data', 'solt', { keySize: 256/32, iterations: 1200 });// 长度64
+    console.log('encryptedPBKDF2:'+encryptedPBKDF2);
   }
 
   onRefresh() {
@@ -136,17 +149,6 @@ class SpxGuysFragment extends Component {
       //this.fetchData();
   }
 }
-
-export default connect((state, props) => ({
-  posts : state.post,
-  user: state.user,
-  ui: state.postListUI
-}), dispatch => ({
-  userAction : bindActionCreators(UserAction, dispatch),
-  guysAction : bindActionCreators(GuysAction, dispatch)
-}), null, {
-  withRef: true
-})(SpxGuysFragment);
 
 const styles = StyleSheet.create({
   container: {
