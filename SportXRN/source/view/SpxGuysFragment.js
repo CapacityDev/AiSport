@@ -17,6 +17,7 @@ import UserListView from '../component/SpxUserListView';
 import ViewPage from '../component/view';
 import Crypto from 'crypto';
 import * as CryptoJS from 'crypto-js';
+import * as UUID from '../util/uuid';
 
 export default class SpxGuysFragment extends Component {
   constructor(props){
@@ -88,7 +89,7 @@ export default class SpxGuysFragment extends Component {
     let encrypted = Crypto.publicEncrypt({
       padding: 1,
       key: publicKey
-    }, new Buffer('电话覅uadsfddsf敌法阿斯顿发呆圣达菲就卡死的方法IERPG好人'), false);
+    }, new Buffer('返回大家是否记得时刻发挥放大视力恢复的电话放电视了辅导费都是浪费地方对双方双方'), false);
     console.log('encrypted:'+encrypted);
 
     let decrypted = Crypto.privateDecrypt({
@@ -97,8 +98,24 @@ export default class SpxGuysFragment extends Component {
     }, encrypted, false).toString();
     console.log('decrypted:'+decrypted);
 
-    var encryptedPBKDF2 = CryptoJS.PBKDF2('data', 'solt', { keySize: 256/32, iterations: 1200 });// 长度64
+    let encryptedPBKDF2 = CryptoJS.PBKDF2('data', 'solt', { keySize: 256/32, iterations: 1200 });// 长度64
     console.log('encryptedPBKDF2:'+encryptedPBKDF2);
+    let key = CryptoJS.enc.Latin1.parse('sfph8yhfuewfw7fhu');
+    console.log(key);
+    let uuid = UUID.generateUUID();
+    console.log(uuid);
+    var encryptedAES = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(decrypted), CryptoJS.enc.Latin1.parse(uuid), {
+      iv: CryptoJS.enc.Latin1.parse('a1f0b7372ef129c7'),
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7
+    });
+    console.log('encryptedAES:'+encryptedAES.toString());
+    var decryptedAES = CryptoJS.AES.decrypt(encryptedAES.toString(), CryptoJS.enc.Latin1.parse(uuid), {
+      iv: CryptoJS.enc.Latin1.parse('a1f0b7372ef129c7'),
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7
+    });
+    console.log('decryptedAES:'+decryptedAES.toString(CryptoJS.enc.Utf8));
   }
 
   onRefresh() {
