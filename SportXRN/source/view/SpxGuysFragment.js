@@ -19,8 +19,9 @@ import Crypto from 'crypto';
 import * as CryptoJS from 'crypto-js';
 import * as UUID from '../util/uuid';
 import * as Encrypt from '../util/encrypt';
-import * as SpxCipherService from '../service/SpxCipherService'
-import * as SpxGuysService from '../service/SpxGuysService'
+import * as SpxCipherService from '../service/SpxCipherService';
+import * as SpxGuysService from '../service/SpxGuysService';
+import { Base64 } from '../common/base64';
 
 export default class SpxGuysFragment extends Component {
   constructor(props){
@@ -77,6 +78,8 @@ export default class SpxGuysFragment extends Component {
     userInfo.userLastName = '三丰';
     userInfo.phoneNo = '13546456455';
 
+
+    let tmpBase64 = Base64.encode(CryptoJS.enc.Latin1.parse('dsjfidns的回复爱上地方的风景都是afdsfhioasduhfdpsa2398与柔和的'));
     console.log(Crypto.randomBytes(32).toString('hex'));
 
     let publicKey = `-----BEGIN PUBLIC KEY-----`
@@ -95,6 +98,9 @@ export default class SpxGuysFragment extends Component {
       key: publicKey
     }, new Buffer('返回大家是否记得时刻发挥放大视力恢复的电话放电视了辅导费都是浪费地方对双方双方'), false);
     console.log('encrypted:'+encrypted);
+
+    tmpBase64 = Base64.encode(encrypted.toString());
+    let tmpBase64Decode = Base64.decode(tmpBase64);
 
     let decrypted = Crypto.privateDecrypt({
       padding: 1,
