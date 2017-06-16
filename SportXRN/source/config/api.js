@@ -77,5 +77,8 @@ export default  {
 		usernosalt: "user/signup/obtainSigninNameSolt.action",
 		usernoValid: "user/signup/usernoValid.action",
 		guysRegist: "user/signup/signup.action"
+	},
+	spxCipher: {
+		getRSAPbK: "cipher/obtainRsaPbkey.action"
 	}
 }

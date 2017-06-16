@@ -124,7 +124,7 @@ class SpxGuysSignupPasswordPage extends Component {
 
     pwdEncrypt(solt) {
       this.userInfo.encryptionSalt = solt;
-      this.userInfo.signinPwd = Encrypt.EncryptPBKDF2(this.password.value(), solt);
+      this.userInfo.signinPwd = Encrypt.encryptPBKDF2(this.password.value(), solt);
       this.props.guysAction.guysRegist({ userInfo: this.userInfo });
     }
 

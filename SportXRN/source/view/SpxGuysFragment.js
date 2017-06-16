@@ -18,6 +18,9 @@ import ViewPage from '../component/view';
 import Crypto from 'crypto';
 import * as CryptoJS from 'crypto-js';
 import * as UUID from '../util/uuid';
+import * as Encrypt from '../util/encrypt';
+import * as SpxCipherService from '../service/SpxCipherService'
+import * as SpxGuysService from '../service/SpxGuysService'
 
 export default class SpxGuysFragment extends Component {
   constructor(props){
@@ -69,6 +72,7 @@ export default class SpxGuysFragment extends Component {
 
     userInfo.encryptionSalt = '123456789';
     userInfo.signinPwd = 'wqhr32ur83i09238r';
+    userInfo.usernoSalt = 'fhasfheue';
     userInfo.userFirstName = '张';
     userInfo.userLastName = '三丰';
     userInfo.phoneNo = '13546456455';
@@ -116,6 +120,34 @@ export default class SpxGuysFragment extends Component {
       padding: CryptoJS.pad.Pkcs7
     });
     console.log('decryptedAES:'+decryptedAES.toString(CryptoJS.enc.Utf8));
+
+    Encrypt.encryptAESGenerateSKPromise('的话费卡都是 答案的身份43%……——@@（）*第三方dsafijd+  ').then(function (data){
+      // 成功 resolve
+      console.log(data);
+      // 解密
+      Encrypt.decryptAESBySKPromise(data.sk, data.encryptedData).then(function (data){
+        // 成功 resolve
+        console.log(data);
+      }, function (data){
+        // 失败 reject
+        console.log(data);
+      });
+    }, function (data){
+      // 失败 reject
+      console.log(data);
+    });
+    var encryptedObj = Encrypt.encryptAESGenerateSK('的话费卡都是 答案的身份43%……——@@（）*第三方dsafijd+  ');
+    console.log(encryptedObj);
+    var decryptedObj = Encrypt.decryptAESBySK(encryptedObj.sk, encryptedObj.encryptedData);
+    console.log(decryptedObj);
+
+    SpxCipherService.getRSAPublicKey();
+
+    SpxGuysService.guysRegist(userInfo).then(function (data){
+      console.log(data);
+    }, function (data){
+      console.log(data);
+    });
   }
 
   onRefresh() {
