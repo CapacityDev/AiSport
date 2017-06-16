@@ -18,7 +18,7 @@ export function encryptAESDefaultSK(data) {
 
 /*AES加密（生成加密密钥），不支持空字符加密*/
 export function encryptAESGenerateSK(data) {
-  let sk = UUID.generateUUID();
+  let sk = UUID.generateUUID().substr(0, 16);
   let encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(data), CryptoJS.enc.Latin1.parse(sk), {
     iv: CryptoJS.enc.Latin1.parse(AuthTokenIvAES),
     mode: CryptoJS.mode.CBC,
@@ -110,7 +110,7 @@ export function encryptRSAByPubKey(pubKey, data) {
     padding: 1,
     key: publicKey
   }, new Buffer(data), false);
-  return encrypted.toString();
+  return encrypted.toString('hex');
 }
 
 /*PBKDF2*/

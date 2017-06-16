@@ -88,6 +88,9 @@ export default class SpxGuysFragment extends Component {
     + `\n`
     + `-----END PUBLIC KEY-----`;
 
+    let tmpencryptdata = Encrypt.encryptRSAByPubKey(publicKey, '电脑辐射带来恐惧啊发当时发生的和发生地放hsdufa');
+    // let tmpencryptdatabase64 = Base64.encode(tmpencryptdata);
+
     let privateKey = `-----BEGIN PRIVATE KEY-----`
     + `\n`
     + `MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAIuuQK2M2ATh2895FwTuw0YLuytEob8oW3ISbaYEkq+d/efUyAIBckWOcuAw4RhplIrxJ8yGdWWTKinsDZHHKjQeJ36RyEOHryqUULqoGB10w08zkAP5wbKWHPJXpnlz2RjB9RSdM2fCJ8LeZY3dwsdzAfuKJSNuibpDbeLd9Cw1AgMBAAECgYALjuS9N61cYhAdT+jOuK8h6bCYOPqlZcKDYvD9zt0QeSNcfqf6OoJpLQtmb8UAjyQCh0gCzZGDUTUo+OZ6jJ96Rt7Tlu3uBkDTFlKg1bB2e4h6iUk45Kbceg4XK/PpoA/U/o6Hun1SYXXJ1hQtPvHftTObL+KdxkjgrK9dmiGFVQJBAN3LQ17+I4r3RLKkXF0iCrCTqnw8WZDEy0n9o6UTpz/iUlNf3rQSALDA1hAZ1CAY0znhK+/uAkEmVWirbaZnfB8CQQChOQpyHa6u7e7kGCIK418ZZTgnE1y249SztqPnKEva3S/HNiu2kfLbM4DZ6G9urpi70+S6Rxn1m1XdEiDuI00rAkEAuTsBl/rtGijqAbvMu6crgE7CyiDouEPyd2fR3JKuUmckVCcz6fVDCFr0K9w2UVwKRENum2GOFnT6TYEmARxaBwJAFAMnl8i1cUNZnvib6SwWFunokXkmzhDzyycFq2DmIZHJJ3pC7NOrCKiY+vOOOXf0v4Pq5XCD+WfBvcJNUiIRpwJAMJ+mroQ3TVsNSP5+ljGWLN4hbQhTwT/lW6YW49wCjBiPjtAc3Z5cDCBjNLkSVttTLgiu1Zz96cgyog5wkNPGrw==`
@@ -96,10 +99,10 @@ export default class SpxGuysFragment extends Component {
     let encrypted = Crypto.publicEncrypt({
       padding: 1,
       key: publicKey
-    }, new Buffer('返回大家是否记得时刻发挥放大视力恢复的电话放电视了辅导费都是浪费地方对双方双方'), false);
+    }, new Buffer('返回大家是否记得时刻发挥放大视力恢复的电话放电视了辅导费'), false);
     console.log('encrypted:'+encrypted);
 
-    tmpBase64 = Base64.encode(encrypted.toString());
+    // tmpBase64 = Base64.encode(encrypted.toString());
     let tmpBase64Decode = Base64.decode(tmpBase64);
 
     let decrypted = Crypto.privateDecrypt({
@@ -107,6 +110,14 @@ export default class SpxGuysFragment extends Component {
       key: privateKey
     }, encrypted, false).toString();
     console.log('decrypted:'+decrypted);
+
+    let encryptedHex = encrypted.toString('hex');
+    let encryptedHexBuff = new Buffer(encryptedHex, 'hex');
+    let ds2 = Crypto.privateDecrypt({
+        padding: 1,
+        key: privateKey
+    }, new Buffer(encryptedHex, 'hex'), false).toString();
+    console.log("--------ds2:" + ds2);
 
     let encryptedPBKDF2 = CryptoJS.PBKDF2('data', 'solt', { keySize: 256/32, iterations: 1200 });// 长度64
     console.log('encryptedPBKDF2:'+encryptedPBKDF2);
@@ -119,6 +130,7 @@ export default class SpxGuysFragment extends Component {
       mode: CryptoJS.mode.CBC,
       padding: CryptoJS.pad.Pkcs7
     });
+    tmpBase64 = Base64.encode(encryptedAES);
     console.log('encryptedAES:'+encryptedAES.toString());
     var decryptedAES = CryptoJS.AES.decrypt(encryptedAES.toString(), CryptoJS.enc.Latin1.parse(uuid), {
       iv: CryptoJS.enc.Latin1.parse('a1f0b7372ef129c7'),

@@ -16,7 +16,7 @@ export default {
 		declare: '本软件为个人学习交流作品，内容来源于博客园官方开放接口，版权归博客园及原作者所有。'
 	},
 	commentTail: 'from [url=http://fir.im/togayther]rn-cnblogs[/url]',
-	apiDomain:'http://192.168.42.161:8080/sportx/'
+	apiDomain:'http://127.0.0.1:8080/sportx/'
 };
 
 export const postCategory = {
