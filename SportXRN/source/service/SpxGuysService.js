@@ -30,6 +30,8 @@ export function usernoValid(userno) {
 
 // 用户注册
 export function guysRegist(userInfo) {
+
+  userInfo.encryptionSalt = UUID.generateUUID();// 获取密码加密盐
   // 数据校验
   if (userInfo) {
     if (!StringUtil.isEmpty(userInfo.encryptionSalt)) {
@@ -38,11 +40,6 @@ export function guysRegist(userInfo) {
       });
     }
     if (!StringUtil.isEmpty(userInfo.signinPwd)) {
-      return new Promise((resolve, reject) => {
-        reject('注册失败，您可以尝试重新注册一下。');
-      });
-    }
-    if (!StringUtil.isEmpty(userInfo.usernoSalt)) {
       return new Promise((resolve, reject) => {
         reject('注册失败，您可以尝试重新注册一下。');
       });
@@ -62,7 +59,8 @@ export function guysRegist(userInfo) {
         reject('电话可能没有填写，请确认一下。');
       });
     }
-    userInfo.signinCode = Encrypt.encryptPBKDF2(userInfo.phoneNo, userInfo.usernoSalt);// 登录标识
+    userInfo.signinCode = Encrypt.encryptPBKDF2(userInfo.phoneNo, '38dcfced28e4465ca5854136e959ce69');// 登录标识
+    userInfo.signinPwd = Encrypt.encryptPBKDF2(userInfo.signinPwd, userInfo.encryptionSalt);// 对密码加密
   }
   // 将数据转成json字符串
   let jsonData = JSON.stringify(userInfo);

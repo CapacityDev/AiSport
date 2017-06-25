@@ -107,12 +107,8 @@ class SpxGuysSignupPasswordPage extends Component {
     nextstepPress() {
       if (this.nextstep) {
         // 下一步
-        this.props.guysAction.getUserPwdSalt({
-          resolved: (data)=>{
-            this.pwdEncrypt(data);
-          },
-          rejected: (data)=>{}
-        });
+        this.userInfo.signinPwd = this.password.value();
+        this.props.guysAction.guysRegist({ userInfo: this.userInfo });
       } else {
         // 不做处理
       }
@@ -120,12 +116,6 @@ class SpxGuysSignupPasswordPage extends Component {
 
     prevstepPress() {
       this.props.router.pop();
-    }
-
-    pwdEncrypt(solt) {
-      this.userInfo.encryptionSalt = solt;
-      this.userInfo.signinPwd = Encrypt.encryptPBKDF2(this.password.value(), solt);
-      this.props.guysAction.guysRegist({ userInfo: this.userInfo });
     }
 
     render(){

@@ -132,12 +132,6 @@ export default class SpxGuysSignupPhonePage extends Component {
                                   label='电话'
                                   onChangeText={this.onChangeText}
                         />
-                        <Button
-                              containerStyle={{marginTop: px2dp(10), width: px2dp(105), height: px2dp(25), borderRadius:4}}
-                              style={{fontSize: px2dp(15), color: 'white'}}
-                              onPress={() => this.useEmailRegPress()}>
-                            使用邮箱注册
-                        </Button>
                     </VisibleView>
                     <VisibleView visible={data.emailvisible} style={styles.content}>
                         <Text style={styles.text}>您的邮箱是？</Text>
