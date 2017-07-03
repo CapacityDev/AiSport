@@ -1,5 +1,5 @@
 /**
- * 用户注册，姓名填写界面
+ * 用户注册，图形验证码界面（用于防止恶意获取手机验证码）
  * Created by Icey on 14/11/16.
  */
 import React, { PropTypes, Component } from 'react';
@@ -12,49 +12,41 @@ import px2dp from '../util/px2dp';
 import theme from '../config/theme';
 import ViewPage from '../component/view';
 import NavigationBar from '../component/SpxSimpleNavigationBar';
-import VisibleView from '../component/SpxVisibleView';
 
-export default class SpxGuysSignupPhonePage extends Component {
+export default class SpxGuysSignupCaptchaPage extends Component {
     constructor(props){
         super(props);
 
         this.onChangeText = this.onChangeText.bind(this);
         this.nextstepPress = this.nextstepPress.bind(this);
 
-        this.phonenumberRef = this.updateRef.bind(this, 'phonenumber');
-        this.emailRef = this.updateRef.bind(this, 'email');
+        this.captchaRef = this.updateRef.bind(this, 'captcha');
         this.nextstepbtnRef = this.updateRef.bind(this, 'nextstepbtn');
 
         this.state = {
-          phonenumber: '',
-          email: '',
-          nextstepbtncolor: theme.actionBar.backgroundColorThin,
-          phonevisible: true,
-          emailvisible: false,
+          captcha: '',
+          nextstepbtncolor: theme.actionBar.backgroundColorThin
         };
-        this.phonenumberisright = false;// 是否合法：true-合法，false-非法
-        this.emailisright = false;// 是否合法：true-合法，false-非法
+        this.captchaisright = false;// 是否合法：true-合法，false-非法
         this.nextstep = false;// 是否可点击下一步：true-是，false-否
 
         this.userInfo = props.userInfo;// 用户信息对象，用于界面之间数据交互
     }
 
     onChangeText(text) {
-        ['phonenumber', 'email']
+        ['captcha']
         .map((name) => ({ name, ref: this[name] }))
         .forEach(({ name, ref }) => {
           if (ref) {
             if (ref.isFocused()) {
               this.setState({ [name]: text });
               if ('' != text) {
-                if ('phonenumber' == name) {
-                  if ( 11 == text.length ) {
+                if ('captcha' == name) {
+                  if ( 0 < text.length ) {
                     this[name + 'isright'] = true;
                   } else {
                     this[name + 'isright'] = false;
                   }
-                } else if ('email' == name) {
-                  this[name + 'isright'] = true;
                 }
               } else {
                 this[name + 'isright'] = false;
@@ -70,7 +62,7 @@ export default class SpxGuysSignupPhonePage extends Component {
 
     updateNextState() {
       var validRes = false;// 校验结果，true-合法，false-非法
-      if (this.phonenumberisright || this.emailisright) {
+      if (this.captchaisright) {
         validRes = true;
       }
       if (validRes) {
@@ -90,9 +82,9 @@ export default class SpxGuysSignupPhonePage extends Component {
 
     nextstepPress() {
       if (this.nextstep) {
-        this.userInfo.phoneNo = this.phonenumber.value();
+        this.userInfo.phoneNo = this.captcha.value();
         // 跳转到下一个界面
-        this.props.router.push(ViewPage.spxGuysSignupCaptchaPage(), { userInfo: this.userInfo });
+        this.props.router.push(ViewPage.spxGuysSignupPasswordPage(), { userInfo: this.userInfo });
       } else {
         // 不做处理
       }
@@ -102,14 +94,6 @@ export default class SpxGuysSignupPhonePage extends Component {
       this.props.router.pop();
     }
 
-    useEmailRegPress() {
-      this.setState({ phonevisible: false,  emailvisible: true });
-    }
-
-    usePhoneRegPress() {
-      this.setState({ phonevisible: true,  emailvisible: false });
-    }
-
     render(){
         let { ...data } = this.state;
 
@@ -117,44 +101,20 @@ export default class SpxGuysSignupPhonePage extends Component {
             <View style={styles.container}>
                 <NavigationBar title="" backOnPress={() => this.prevstepPress()}/>
                 <ScrollView>
-                    <VisibleView visible={data.phonevisible} style={styles.content}>
-                        <Text style={styles.text}>您的电话号码是？</Text>
-                        <TextField
-                                  textColor='rgb(255, 255, 255)'
-                                  tintColor='rgb(255, 255, 255)'
-                                  baseColor='rgb(255, 255, 255)'
-                                  fontSize={px2dp(20)}
-                                  ref={this.phonenumberRef}
-                                  value={data.phonenumber}
-                                  autoCorrect={false}
-                                  enablesReturnKeyAutomatically={true}
-                                  returnKeyType='next'
-                                  label='电话'
-                                  onChangeText={this.onChangeText}
-                        />
-                    </VisibleView>
-                    <VisibleView visible={data.emailvisible} style={styles.content}>
-                        <Text style={styles.text}>您的邮箱是？</Text>
-                        <TextField
-                                  textColor='rgb(255, 255, 255)'
-                                  tintColor='rgb(255, 255, 255)'
-                                  baseColor='rgb(255, 255, 255)'
-                                  fontSize={px2dp(20)}
-                                  ref={this.emailRef}
-                                  value={data.email}
-                                  autoCorrect={false}
-                                  enablesReturnKeyAutomatically={true}
-                                  returnKeyType='next'
-                                  label='邮箱'
-                                  onChangeText={this.onChangeText}
-                        />
-                        <Button
-                              containerStyle={{marginTop: px2dp(10), width: px2dp(105), height: px2dp(25), borderRadius:4}}
-                              style={{fontSize: px2dp(15), color: 'white'}}
-                              onPress={() => this.usePhoneRegPress()}>
-                            使用手机注册
-                        </Button>
-                    </VisibleView>
+                    <Image style={{width:px2dp(150), height:px2dp(36)}} source={{uri:'https://authcode.jd.com/verify/image?a=0&acid=3d5412c1-7207-4f71-9664-04579de4963e&uid=3d5412c1-7207-4f71-9664-04579de4963e&srcid=reg&is=16763316690e822b4f39d71d934ed3dd&yys=1498902409255'}}/>
+                    <TextField
+                              textColor='rgb(255, 255, 255)'
+                              tintColor='rgb(255, 255, 255)'
+                              baseColor='rgb(255, 255, 255)'
+                              fontSize={px2dp(20)}
+                              ref={this.captchaRef}
+                              value={data.captcha}
+                              autoCorrect={false}
+                              enablesReturnKeyAutomatically={true}
+                              returnKeyType='next'
+                              label='请输入验证码'
+                              onChangeText={this.onChangeText}
+                    />
                 </ScrollView>
                 <ActionButton
                             ref={this.nextstepbtnRef}
