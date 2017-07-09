@@ -6,6 +6,7 @@ import com.facebook.react.ReactApplication;
 import com.bitgo.randombytes.RandomBytesPackage;
 import com.cboy.rn.splashscreen.SplashScreenReactPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
+import com.remobile.toast.RCTToastPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -28,7 +29,8 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new RandomBytesPackage(),
             new SplashScreenReactPackage(),
-            new VectorIconsPackage()
+            new VectorIconsPackage(),
+            new RCTToastPackage()
       );
     }
   };

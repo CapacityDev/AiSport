@@ -7,7 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@remobile/react-native-toast": "1.0.6",
+    "@remobile/react-native-toast": "^1.0.6",
     "assert": "^1.1.1",
     "asyncstorage-down": "^3.0.0",
     "browserify-zlib": "^0.1.4",

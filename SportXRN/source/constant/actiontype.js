@@ -50,4 +50,9 @@ export const CLEAR_AUTHOR_SEARCH_RESULT = "CLEAR_AUTHOR_SEARCH_RESULT";
 // guys
 export const SPX_GET_USER_SALT = "SPX_GET_USER_SALT";
 export const SPX_GET_USER_NO_SALT = "SPX_GET_USER_NO_SALT";
+export const SPX_GET_GUYS_REG_SMS_CAPTCHA = "SPX_GET_GUYS_REG_SMS_CAPTCHA";// 获取用户注册短信验证码
 export const SPX_GUYS_REGIST = "SPX_GUYS_REGIST";
+
+// spx common
+export const SPX_GET_PIC_CAPTCHA = "SPX_GET_PIC_CAPTCHA";// 图形验证码
+export const SPX_GET_SMS_CAPTCHA = "SPX_GET_SMS_CAPTCHA";// 短信验证码

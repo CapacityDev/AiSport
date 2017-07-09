@@ -9,7 +9,7 @@ import Toast from '@remobile/react-native-toast';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 
 class Messager extends Component {
-	
+
 	constructor(props) {
 		super(props);
 		this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
@@ -31,11 +31,7 @@ class Messager extends Component {
 
 export default connect(state => ({
   	common : state.common
-}), dispatch => ({ 
+}), dispatch => ({
 }), null, {
   	withRef: true
 })(Messager);
-
-
-
-

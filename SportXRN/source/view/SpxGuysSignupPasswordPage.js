@@ -165,9 +165,6 @@ class SpxGuysSignupPasswordPage extends Component {
 }
 
 export default connect((state, props) => ({
-  posts : state.post,
-  user: state.user,
-  ui: state.postListUI
 }), dispatch => ({
   guysAction : bindActionCreators(GuysAction, dispatch)
 }), null, {

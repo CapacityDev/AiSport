@@ -30,6 +30,20 @@ export const getUserNoSalt = createAction(
   }
 );
 
+// 获取用户注册短信验证码
+export const getGuysRegSmsCaptcha = createAction(
+  types.SPX_GET_GUYS_REG_SMS_CAPTCHA,
+  async({reqInfo})=> {
+    return await guysService.getGuysRegSmsCaptcha(reqInfo);
+  },
+  ({resolved, rejected})=> {
+    return {
+      resolved,
+      rejected
+    }
+  }
+);
+
 // 用户注册
 export const guysRegist = createAction(
   types.SPX_GUYS_REGIST,

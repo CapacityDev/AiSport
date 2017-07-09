@@ -28,6 +28,55 @@ export function usernoValid(userno) {
   return requestService.get(fetchApi);
 }
 
+// 获取用户注册短信验证码
+export function getGuysRegSmsCaptcha(reqInfo) {
+  // TODO 数据校验
+  // 将数据转成json字符串
+  let jsonData = JSON.stringify(reqInfo);
+  return new Promise(function(resolve, reject){
+    // 使用用rsa公钥加密 aes密钥
+    // 获取rsa公钥
+    SpxCipherService.getRSAPublicKey().then(function (data){
+      // 获取rsa公钥成功
+      let rsaPubKey = data.repData.publicKey;// 公钥
+      let cacheKey = data.repData.cacheKey;// 对应缓存key
+      // 对数据进行aes加密
+      let encryptedObj = Encrypt.encryptAESGenerateSK(jsonData);
+      if (encryptedObj.success) {
+        // 加密成功
+        // 使用rsa公钥对aes密钥加密
+        let aesKey = Encrypt.encryptRSAByPubKey(rsaPubKey, encryptedObj.sk);
+        let sendObj = {};
+        DataTrans.concatSendObjByObj(sendObj, {
+          jsonData: encryptedObj.encryptedData,
+          sk: aesKey,
+          ck: cacheKey
+        }, 'cipherReqData');
+        let formData = new FormData();
+        let proptNames = Object.keys(sendObj);
+        for (let i=0; i<proptNames.length; i++) {
+          formData.append(proptNames[i], sendObj[proptNames[i]]);
+        }
+        let headers = {
+          'Content-type': 'multipart/form-data'
+        };
+        let fetchApi = dataApi.spxGuys.getGuysRegSmsCaptcha;
+        requestService.post(fetchApi, formData, headers).then(function (data){
+          resolve(data);
+        }, function (data){
+          reject(data);
+        });
+      } else {
+        // 加密失败
+        reject('数据加密失败');
+      }
+    }, function (data){
+      // 获取rsa公钥失败
+      reject(data);
+    });
+  });
+}
+
 // 用户注册
 export function guysRegist(userInfo) {
 
@@ -92,10 +141,8 @@ export function guysRegist(userInfo) {
         };
         let fetchApi = dataApi.spxGuys.guysRegist;
         requestService.post(fetchApi, formData, headers).then(function (data){
-          console.log(data);
           resolve(data);
         }, function (data){
-          console.log(data);
           reject(data);
         });
       } else {

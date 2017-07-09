@@ -32,3 +32,4 @@ export { default as SpxGuysSignupNamePage } from './SpxGuysSignupNamePage';
 export { default as SpxGuysSignupPhonePage } from './SpxGuysSignupPhonePage';
 export { default as SpxGuysSignupPasswordPage } from './SpxGuysSignupPasswordPage';
 export { default as SpxGuysSignupCaptchaPage } from './SpxGuysSignupCaptchaPage';
+export { default as SpxGuysSignupSmsCaptchaPage } from './SpxGuysSignupSmsCaptchaPage';

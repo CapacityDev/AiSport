@@ -76,9 +76,13 @@ export default  {
 		salt: "user/signup/obtainPwdSolt.action",
 		usernosalt: "user/signup/obtainSigninNameSolt.action",
 		usernoValid: "user/signup/usernoValid.action",
+		getGuysRegSmsCaptcha: "captcha/obtainSmsCaptcha.action",// 获取用户注册短信验证码请求url
 		guysRegist: "user/signup/signup.action"
 	},
 	spxCipher: {
 		getRSAPbK: "cipher/obtainRsaPbkey.action"
+	},
+	spxCommon: {
+		getPicCaptcha: "captcha/obtainCaptcha.action"
 	}
 }

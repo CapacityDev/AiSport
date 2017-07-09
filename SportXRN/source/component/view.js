@@ -194,4 +194,10 @@ export default ViewPage = {
           name: 'spxGuysSignupCaptchaPage'
         }
     },
+    spxGuysSignupSmsCaptchaPage: ()=>{
+        return {
+          component: View.SpxGuysSignupSmsCaptchaPage,
+          name: 'spxGuysSignupSmsCaptchaPage'
+        }
+    },
 }
