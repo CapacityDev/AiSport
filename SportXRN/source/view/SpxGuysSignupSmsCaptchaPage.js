@@ -157,7 +157,7 @@ export default connect((state, props) => ({
   spxGuysAction : bindActionCreators(SpxGuysAction, dispatch)
 }), null, {
   withRef: true
-})(SpxGuysSignupCaptchaPage);
+})(SpxGuysSignupSmsCaptchaPage);
 
 const styles = StyleSheet.create({
     container: {
