@@ -151,6 +151,7 @@ class SpxGuysSignupCaptchaPage extends Component {
             if (ResultCode.SUCCESS == data.resultCode) {
               // 发送短信验证码成功
               // 跳转到短信验证码输入界面
+			  this.userInfo.smsCacheKey = data.cacheKey;
               this.props.router.push(ViewPage.spxGuysSignupSmsCaptchaPage(), { userInfo: this.userInfo });
             } else {
               // 短信验证码发送失败，提示，清除图形验证码输入框中的内容，重新获取图形验证码

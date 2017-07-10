@@ -44,6 +44,20 @@ export const getGuysRegSmsCaptcha = createAction(
   }
 );
 
+// 校验用户注册短信验证码
+export const validGuysRegSmsCaptcha = createAction(
+  types.SPX_VALID_GUYS_REG_SMS_CAPTCHA,
+  async({reqInfo})=> {
+    return await guysService.validGuysRegSmsCaptcha(reqInfo);
+  },
+  ({resolved, rejected})=> {
+    return {
+      resolved,
+      rejected
+    }
+  }
+);
+
 // 用户注册
 export const guysRegist = createAction(
   types.SPX_GUYS_REGIST,

@@ -11,30 +11,33 @@ import px2dp from '../util/px2dp';
 import theme from '../config/theme';
 import ViewPage from '../component/view';
 import NavigationBar from '../component/SpxSimpleNavigationBar';
+import * as SpxGuysAction from '../action/SpxGuys';
 
-export default class SpxGuysSignupSmsCaptchaPage extends Component {
+class SpxGuysSignupSmsCaptchaPage extends Component {
     constructor(props){
         super(props);
 
         this.onChangeText = this.onChangeText.bind(this);
         this.nextstepPress = this.nextstepPress.bind(this);
 
-        this.firstnameRef = this.updateRef.bind(this, 'firstname');
-        this.lastnameRef = this.updateRef.bind(this, 'lastname');
+        this.smscaptchaRef = this.updateRef.bind(this, 'smscaptcha');
         this.nextstepbtnRef = this.updateRef.bind(this, 'nextstepbtn');
 
         this.state = {
-            firstname: '',
-            lastname: '',
+            smscaptcha: '',
             nextstepbtncolor: theme.actionBar.backgroundColorThin,
         };
-        this.firstnameisright = false;// 姓氏是否合法：true-合法，false-非法
-        this.lastnameisright = false;// 名字是否合法：true-合法，false-非法
+        this.smscaptchaisright = false;// 姓氏是否合法：true-合法，false-非法
         this.nextstep = false;// 是否可点击下一步：true-是，false-否
+		
+		this.userInfo = props.userInfo;// 用户信息对象，用于界面之间数据交互
+		this.smsCaptchaReqInfo = {};// 校验短信验证码请求对象，cacheKey、inText、mobile
+		this.smsCaptchaReqInfo.mobile = this.userInfo.phoneNo;// 手机号码
+		this.smsCaptchaReqInfo.cacheKey = this.userInfo.smsCacheKey;// 短信验证码缓存key
     }
 
     onChangeText(text) {
-        ['firstname', 'lastname']
+        ['smscaptcha']
         .map((name) => ({ name, ref: this[name] }))
         .forEach(({ name, ref }) => {
           if (ref.isFocused()) {
@@ -48,13 +51,10 @@ export default class SpxGuysSignupSmsCaptchaPage extends Component {
           }
         });
     }
-
-    validInputs() {
-    }
-
+	
     updateNextState() {
       var validRes = false;// 校验结果，true-合法，false-非法
-      if (this.firstnameisright && this.lastnameisright) {
+      if (this.smscaptchaisright) {
         validRes = true;
       }
       if (validRes) {
@@ -70,9 +70,36 @@ export default class SpxGuysSignupSmsCaptchaPage extends Component {
 
     nextstepPress() {
       if (this.nextstep) {
-        // 跳转到下一个界面
-        var userInfo = { userFirstName: this.firstname.value(), userLastName: this.lastname.value() };
-        this.props.router.push(ViewPage.spxGuysSignupPhonePage(), { userInfo: userInfo });
+		this.userInfo.smsCaptcha = this.smscaptcha.value();
+		this.smsCaptchaReqInfo.inText = this.userInfo.smsCaptcha;
+		// 校验短信验证码
+		this.props.spxGuysAction.validGuysRegSmsCaptcha({
+          reqInfo: this.smsCaptchaReqInfo,
+          resolved: (data)=>{
+            if (ResultCode.SUCCESS == data.resultCode) {
+              // 发送短信验证码成功
+              // 跳转到短信验证码输入界面
+              this.props.router.push(ViewPage.spxGuysSignupSmsCaptchaPage(), { userInfo: this.userInfo });
+            } else {
+              // 短信验证码发送失败，提示，清除图形验证码输入框中的内容，重新获取图形验证码
+              this.setState({ captcha: '' });
+              this.captchaisright = false;
+              this.updateNextState();
+              this.getPicCaptcha();
+              Toast.show("发送短信验证码失败，请重试");
+            }
+          },
+          rejected: (data)=>{
+            // 短信验证码发送失败，提示，清除图形验证码输入框中的内容，重新获取图形验证码
+            this.setState({ captcha: '' });
+            this.captchaisright = false;
+            this.updateNextState();
+            this.getPicCaptcha();
+            Toast.show("发送短信验证码失败，请重试");
+          }
+        });
+		// 跳转到下一个界面
+        this.props.router.push(ViewPage.spxGuysSignupPhonePage(), { userInfo: this.userInfo });
       } else {
         // 不做处理
       }
@@ -100,8 +127,8 @@ export default class SpxGuysSignupSmsCaptchaPage extends Component {
                                   tintColor='rgb(255, 255, 255)'
                                   baseColor='rgb(255, 255, 255)'
                                   fontSize={px2dp(20)}
-                                  ref={this.firstnameRef}
-                                  value={data.firstname}
+                                  ref={this.smscaptchaRef}
+                                  value={data.smscaptcha}
                                   autoCorrect={false}
                                   enablesReturnKeyAutomatically={true}
                                   returnKeyType='next'
@@ -124,6 +151,13 @@ export default class SpxGuysSignupSmsCaptchaPage extends Component {
         );
     }
 }
+
+export default connect((state, props) => ({
+}), dispatch => ({
+  spxGuysAction : bindActionCreators(SpxGuysAction, dispatch)
+}), null, {
+  withRef: true
+})(SpxGuysSignupCaptchaPage);
 
 const styles = StyleSheet.create({
     container: {
