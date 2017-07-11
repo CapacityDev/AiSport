@@ -7,6 +7,8 @@ import ReactNative, {Text, View, ScrollView, StyleSheet, Platform, TouchableOpac
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TextField } from 'react-native-material-textfield';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import px2dp from '../util/px2dp';
 import theme from '../config/theme';
 import ViewPage from '../component/view';
@@ -29,11 +31,11 @@ class SpxGuysSignupSmsCaptchaPage extends Component {
         };
         this.smscaptchaisright = false;// 姓氏是否合法：true-合法，false-非法
         this.nextstep = false;// 是否可点击下一步：true-是，false-否
-		
-		this.userInfo = props.userInfo;// 用户信息对象，用于界面之间数据交互
-		this.smsCaptchaReqInfo = {};// 校验短信验证码请求对象，cacheKey、inText、mobile
-		this.smsCaptchaReqInfo.mobile = this.userInfo.phoneNo;// 手机号码
-		this.smsCaptchaReqInfo.cacheKey = this.userInfo.smsCacheKey;// 短信验证码缓存key
+
+    		this.userInfo = props.userInfo;// 用户信息对象，用于界面之间数据交互
+    		this.smsCaptchaReqInfo = {};// 校验短信验证码请求对象，cacheKey、inText、mobile
+    		this.smsCaptchaReqInfo.mobile = this.userInfo.phoneNo;// 手机号码
+    		this.smsCaptchaReqInfo.cacheKey = this.userInfo.smsCacheKey;// 短信验证码缓存key
     }
 
     onChangeText(text) {
@@ -51,7 +53,7 @@ class SpxGuysSignupSmsCaptchaPage extends Component {
           }
         });
     }
-	
+
     updateNextState() {
       var validRes = false;// 校验结果，true-合法，false-非法
       if (this.smscaptchaisright) {
@@ -70,35 +72,35 @@ class SpxGuysSignupSmsCaptchaPage extends Component {
 
     nextstepPress() {
       if (this.nextstep) {
-		this.userInfo.smsCaptcha = this.smscaptcha.value();
-		this.smsCaptchaReqInfo.inText = this.userInfo.smsCaptcha;
-		// 校验短信验证码
-		this.props.spxGuysAction.validGuysRegSmsCaptcha({
-          reqInfo: this.smsCaptchaReqInfo,
-          resolved: (data)=>{
-            if (ResultCode.SUCCESS == data.resultCode) {
-              // 发送短信验证码成功
-              // 跳转到短信验证码输入界面
-              this.props.router.push(ViewPage.spxGuysSignupSmsCaptchaPage(), { userInfo: this.userInfo });
-            } else {
-              // 短信验证码发送失败，提示，清除图形验证码输入框中的内容，重新获取图形验证码
-              this.setState({ captcha: '' });
-              this.captchaisright = false;
-              this.updateNextState();
-              this.getPicCaptcha();
-              Toast.show("发送短信验证码失败，请重试");
-            }
-          },
-          rejected: (data)=>{
-            // 短信验证码发送失败，提示，清除图形验证码输入框中的内容，重新获取图形验证码
-            this.setState({ captcha: '' });
-            this.captchaisright = false;
-            this.updateNextState();
-            this.getPicCaptcha();
-            Toast.show("发送短信验证码失败，请重试");
-          }
-        });
-		// 跳转到下一个界面
+    		this.userInfo.smsCaptcha = this.smscaptcha.value();
+    		this.smsCaptchaReqInfo.inText = this.userInfo.smsCaptcha;
+    		// 校验短信验证码
+    		this.props.spxGuysAction.validGuysRegSmsCaptcha({
+              reqInfo: this.smsCaptchaReqInfo,
+              resolved: (data)=>{
+                if (ResultCode.SUCCESS == data.resultCode) {
+                  // 发送短信验证码成功
+                  // 跳转到短信验证码输入界面
+                  this.props.router.push(ViewPage.spxGuysSignupSmsCaptchaPage(), { userInfo: this.userInfo });
+                } else {
+                  // 短信验证码发送失败，提示，清除图形验证码输入框中的内容，重新获取图形验证码
+                  this.setState({ captcha: '' });
+                  this.captchaisright = false;
+                  this.updateNextState();
+                  this.getPicCaptcha();
+                  Toast.show("发送短信验证码失败，请重试");
+                }
+              },
+              rejected: (data)=>{
+                // 短信验证码发送失败，提示，清除图形验证码输入框中的内容，重新获取图形验证码
+                this.setState({ captcha: '' });
+                this.captchaisright = false;
+                this.updateNextState();
+                this.getPicCaptcha();
+                Toast.show("发送短信验证码失败，请重试");
+              }
+            });
+    		// 跳转到下一个界面
         this.props.router.push(ViewPage.spxGuysSignupPhonePage(), { userInfo: this.userInfo });
       } else {
         // 不做处理
