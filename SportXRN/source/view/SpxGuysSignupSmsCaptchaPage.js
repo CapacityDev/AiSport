@@ -6,6 +6,7 @@ import React, { PropTypes, Component } from 'react';
 import ReactNative, {Text, View, ScrollView, StyleSheet, Platform, TouchableOpacity, ListView, Image, PixelRatio, BackAndroid} from 'react-native';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Toast from '@remobile/react-native-toast';
 import { TextField } from 'react-native-material-textfield';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -13,6 +14,7 @@ import px2dp from '../util/px2dp';
 import theme from '../config/theme';
 import ViewPage from '../component/view';
 import NavigationBar from '../component/SpxSimpleNavigationBar';
+import * as ResultCode from '../constant/ResultCode';
 import * as SpxGuysAction from '../action/SpxGuys';
 
 class SpxGuysSignupSmsCaptchaPage extends Component {
@@ -76,32 +78,29 @@ class SpxGuysSignupSmsCaptchaPage extends Component {
     		this.smsCaptchaReqInfo.inText = this.userInfo.smsCaptcha;
     		// 校验短信验证码
     		this.props.spxGuysAction.validGuysRegSmsCaptcha({
-              reqInfo: this.smsCaptchaReqInfo,
-              resolved: (data)=>{
-                if (ResultCode.SUCCESS == data.resultCode) {
-                  // 发送短信验证码成功
-                  // 跳转到短信验证码输入界面
-                  this.props.router.push(ViewPage.spxGuysSignupSmsCaptchaPage(), { userInfo: this.userInfo });
-                } else {
-                  // 短信验证码发送失败，提示，清除图形验证码输入框中的内容，重新获取图形验证码
-                  this.setState({ captcha: '' });
-                  this.captchaisright = false;
-                  this.updateNextState();
-                  this.getPicCaptcha();
-                  Toast.show("发送短信验证码失败，请重试");
-                }
-              },
-              rejected: (data)=>{
-                // 短信验证码发送失败，提示，清除图形验证码输入框中的内容，重新获取图形验证码
-                this.setState({ captcha: '' });
-                this.captchaisright = false;
-                this.updateNextState();
-                this.getPicCaptcha();
-                Toast.show("发送短信验证码失败，请重试");
-              }
-            });
-    		// 跳转到下一个界面
-        this.props.router.push(ViewPage.spxGuysSignupPhonePage(), { userInfo: this.userInfo });
+          reqInfo: this.smsCaptchaReqInfo,
+          resolved: (data)=>{
+            console.info('dfasdfds');
+            if (ResultCode.SUCCESS == data.resultCode) {
+              // 短信验证码校验成功
+              // 跳转到密码输入界面
+              this.props.router.push(ViewPage.spxGuysSignupPasswordPage(), { userInfo: this.userInfo });
+            } else {
+              // 短信验证码验证失败
+              this.setState({ smscaptcha: '' });
+              this.captchaisright = false;
+              this.updateNextState();
+              Toast.show("短信验证码验证失败，请重试");
+            }
+          },
+          rejected: (data)=>{
+            // 短信验证码发送失败，提示
+            this.setState({ smscaptcha: '' });
+            this.captchaisright = false;
+            this.updateNextState();
+            Toast.show("短信验证码验证失败，请重试");
+          }
+        });
       } else {
         // 不做处理
       }
