@@ -7,6 +7,7 @@ import ReactNative, {Text, View, ScrollView, StyleSheet, Platform, TouchableOpac
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import Toast from '@remobile/react-native-toast';
 import { TextField } from 'react-native-material-textfield';
 import Button from 'react-native-button';
 import PBKDF2 from 'crypto-js/pbkdf2';
@@ -16,6 +17,7 @@ import px2dp from '../util/px2dp';
 import theme from '../config/theme';
 import ViewPage from '../component/view';
 import NavigationBar from '../component/SpxSimpleNavigationBar';
+import * as ResultCode from '../constant/ResultCode';
 import * as GuysAction from '../action/SpxGuys';
 import * as Encrypt from '../util/encrypt';
 
@@ -108,7 +110,19 @@ class SpxGuysSignupPasswordPage extends Component {
       if (this.nextstep) {
         // 下一步
         this.userInfo.signinPwd = this.password.value();
-        this.props.guysAction.guysRegist({ userInfo: this.userInfo });
+        this.props.guysAction.guysRegist({
+          userInfo: this.userInfo,
+          resolved: (data)=>{
+            if (ResultCode.SUCCESS == data.resultCode) {
+              Toast.show("注册成功");
+            } else {
+              Toast.show("注册失败");
+            }
+          },
+          rejected: (data)=>{
+            Toast.show("注册失败");
+          }
+        });
       } else {
         // 不做处理
       }

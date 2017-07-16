@@ -84,6 +84,7 @@ class SpxGuysSignupSmsCaptchaPage extends Component {
             if (ResultCode.SUCCESS == data.resultCode) {
               // 短信验证码校验成功
               // 跳转到密码输入界面
+              this.userInfo.ck = data.cacheKey;// 用户注册校验信息缓存key
               this.props.router.push(ViewPage.spxGuysSignupPasswordPage(), { userInfo: this.userInfo });
             } else {
               // 短信验证码验证失败
