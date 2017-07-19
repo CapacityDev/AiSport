@@ -7,6 +7,7 @@ import {
 
 import Updater from './updater';
 import Messager from './messager';
+import theme from '../config/theme';
 
 class Plugin extends Component {
 
@@ -32,8 +33,8 @@ class Plugin extends Component {
 		return (
 			<View>
 				<StatusBar
-					translucent ={ true }
-					backgroundColor="rgba(0, 0, 0, 0.2)"
+					translucent ={ false }
+					backgroundColor={theme.actionBar.backgroundColor}
 					barStyle="light-content" />
 					
 				{ this.renderUpdater() }

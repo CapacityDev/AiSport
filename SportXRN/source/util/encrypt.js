@@ -115,6 +115,6 @@ export function encryptRSAByPubKey(pubKey, data) {
 
 /*PBKDF2*/
 export function encryptPBKDF2(data, solt) {
-  let encrypted = CryptoJS.PBKDF2(data, solt, { keySize: 256/32, iterations: 1200 });// 长度64
+  let encrypted = CryptoJS.PBKDF2(data, solt, { keySize: 256/32, iterations: 1000 });// 长度64
   return encrypted.toString();
 }

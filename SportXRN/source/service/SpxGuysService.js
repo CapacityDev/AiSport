@@ -157,7 +157,6 @@ export function guysRegist(userInfo) {
         reject('电话可能没有填写，请确认一下。');
       });
     }
-    userInfo.signinCode = Encrypt.encryptPBKDF2(userInfo.phoneNo, '38dcfced28e4465ca5854136e959ce69');// 登录标识
     userInfo.signinPwd = Encrypt.encryptPBKDF2(userInfo.signinPwd, userInfo.encryptionSalt);// 对密码加密
   }
   // 将数据转成json字符串

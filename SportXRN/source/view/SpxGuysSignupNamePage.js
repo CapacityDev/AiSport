@@ -3,7 +3,7 @@
  * Created by Icey on 14/11/16.
  */
 import React, { PropTypes, Component } from 'react';
-import ReactNative, {Text, View, ScrollView, StyleSheet, Platform, TouchableOpacity, ListView, Image, PixelRatio, BackAndroid} from 'react-native';
+import ReactNative, {Text, View, ScrollView, StyleSheet, Keyboard} from 'react-native';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TextField } from 'react-native-material-textfield';
@@ -32,6 +32,27 @@ export default class SpxGuysSignupNamePage extends Component {
         this.lastnameisright = false;// 名字是否合法：true-合法，false-非法
         this.nextstep = false;// 是否可点击下一步：true-是，false-否
     }
+	
+	componentDidMount() {
+		// 输入框聚焦
+		this.firstname.focus();
+		
+		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+	}
+	
+	componentWillUnmount() {
+		this.keyboardDidShowListener.remove();
+		this.keyboardDidHideListener.remove();
+	}
+	
+	keyboardDidShow () {
+		// alert('Keyboard Shown');
+	}
+
+	keyboardDidHide () {
+		// alert('Keyboard Hidden');
+	}
 
     onChangeText(text) {
         ['firstname', 'lastname']
@@ -69,13 +90,15 @@ export default class SpxGuysSignupNamePage extends Component {
     }
 
     nextstepPress() {
-      if (this.nextstep) {
-        // 跳转到下一个界面
-        var userInfo = { userFirstName: this.firstname.value(), userLastName: this.lastname.value() };
-        this.props.router.push(ViewPage.spxGuysSignupPhonePage(), { userInfo: userInfo });
-      } else {
-        // 不做处理
-      }
+		var userInfo = {};
+		userInfo.userFirstName = this.firstname.value();
+		userInfo.userLastName = this.lastname.value();
+		if (this.nextstep) {
+		// 跳转到下一个界面
+		this.props.router.push(ViewPage.spxGuysSignupPhonePage(), { userInfo: userInfo });
+		} else {
+		// 不做处理
+		}
     }
 
     prevstepPress() {

@@ -11,6 +11,7 @@ import Button from 'react-native-button';
 import px2dp from '../util/px2dp';
 import theme from '../config/theme';
 import ViewPage from '../component/view';
+import * as GuysConstants from '../constant/GuysConstants';
 import NavigationBar from '../component/SpxSimpleNavigationBar';
 import VisibleView from '../component/SpxVisibleView';
 
@@ -35,9 +36,15 @@ export default class SpxGuysSignupPhonePage extends Component {
         this.phonenumberisright = false;// 是否合法：true-合法，false-非法
         this.emailisright = false;// 是否合法：true-合法，false-非法
         this.nextstep = false;// 是否可点击下一步：true-是，false-否
+		this.accType = GuysConstants.SignupPhoneNo;// 注册账号类型：1-手机号码，2-邮箱
 
         this.userInfo = props.userInfo;// 用户信息对象，用于界面之间数据交互
     }
+	
+	componentDidMount() {
+		// 输入框聚焦
+		this.phonenumber.focus();
+	}
 
     onChangeText(text) {
         ['phonenumber', 'email']
@@ -89,13 +96,26 @@ export default class SpxGuysSignupPhonePage extends Component {
     }
 
     nextstepPress() {
-      if (this.nextstep) {
-        this.userInfo.phoneNo = this.phonenumber.value();
-        // 跳转到下一个界面
-        this.props.router.push(ViewPage.spxGuysSignupCaptchaPage(), { userInfo: this.userInfo });
-      } else {
-        // 不做处理
-      }
+		if (this.nextstep) {
+			this.userInfo.signupAccType = this.accType;
+			if (GuysConstants.SignupPhoneNo == this.accType) {
+				// 手机号码注册
+				// 判断手机号是否已注册
+				this.userInfo.phoneNo = this.phonenumber.value();
+				// 跳转到下一个界面
+				this.props.router.push(ViewPage.spxGuysSignupCaptchaPage(), { userInfo: this.userInfo });
+			} else if (GuysConstants.SignupEmail == this.accType) {
+				// 邮箱注册
+				this.userInfo.emial = this.phonenumber.value();
+				// 跳转到下一个界面
+				this.props.router.push(ViewPage.spxGuysSignupCaptchaPage(), { userInfo: this.userInfo });
+			} else {
+				// 失败
+				alert('非法操作');
+			}
+		} else {
+			// 不做处理
+		}
     }
 
     prevstepPress() {
@@ -104,10 +124,12 @@ export default class SpxGuysSignupPhonePage extends Component {
 
     useEmailRegPress() {
       this.setState({ phonevisible: false,  emailvisible: true });
+	  this.accType = GuysConstants.SignupEmail;// 注册账号类型：1-手机号码，2-邮箱
     }
 
     usePhoneRegPress() {
       this.setState({ phonevisible: true,  emailvisible: false });
+	  this.accType = GuysConstants.SignupPhoneNo;// 注册账号类型：1-手机号码，2-邮箱
     }
 
     render(){
@@ -151,9 +173,8 @@ export default class SpxGuysSignupPhonePage extends Component {
                         />
                         <Button
                               containerStyle={{marginTop: px2dp(10), width: px2dp(105), height: px2dp(25), borderRadius:4}}
-                              style={{fontSize: px2dp(15), color: 'white'}}
                               onPress={() => this.usePhoneRegPress()}>
-                            使用手机注册
+                            <Text style={{fontSize: px2dp(15), color: 'white', textDecorationLine: 'underline', textDecorationStyle: 'solid', textDecorationColor: 'white'}}>使用手机注册</Text>
                         </Button>
                     </VisibleView>
                   </View>
