@@ -33,10 +33,9 @@ class Plugin extends Component {
 		return (
 			<View>
 				<StatusBar
-					translucent ={ false }
+					translucent={ false }
 					backgroundColor={theme.actionBar.backgroundColor}
 					barStyle="light-content" />
-					
 				{ this.renderUpdater() }
 				{ this.renderMessager() }
 			</View>
@@ -45,6 +44,3 @@ class Plugin extends Component {
 }
 
 export default Plugin;
-
-
-
