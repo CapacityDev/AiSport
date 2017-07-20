@@ -8,14 +8,19 @@ import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { TextField } from 'react-native-material-textfield';
 import Button from 'react-native-button';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import Toast from '@remobile/react-native-toast';
 import px2dp from '../util/px2dp';
 import theme from '../config/theme';
 import ViewPage from '../component/view';
-import * as GuysConstants from '../constant/GuysConstants';
 import NavigationBar from '../component/SpxSimpleNavigationBar';
 import VisibleView from '../component/SpxVisibleView';
+import * as ResultCode from '../constant/ResultCode';
+import * as GuysConstants from '../constant/GuysConstants';
+import * as SpxGuysAction from '../action/SpxGuys';
 
-export default class SpxGuysSignupPhonePage extends Component {
+class SpxGuysSignupPhonePage extends Component {
     constructor(props){
         super(props);
 
@@ -27,11 +32,11 @@ export default class SpxGuysSignupPhonePage extends Component {
         this.nextstepbtnRef = this.updateRef.bind(this, 'nextstepbtn');
 
         this.state = {
-          phonenumber: '',
-          email: '',
-          nextstepbtncolor: theme.actionBar.backgroundColorThin,
-          phonevisible: true,
-          emailvisible: false,
+			phonenumber: '',
+			email: '',
+			nextstepbtncolor: theme.actionBar.backgroundColorThin,
+			phonevisible: true,
+			emailvisible: false,
         };
         this.phonenumberisright = false;// 是否合法：true-合法，false-非法
         this.emailisright = false;// 是否合法：true-合法，false-非法
@@ -43,7 +48,7 @@ export default class SpxGuysSignupPhonePage extends Component {
 	
 	componentDidMount() {
 		// 输入框聚焦
-		this.phonenumber.focus();
+		//this.phonenumber.focus();
 	}
 
     onChangeText(text) {
@@ -98,21 +103,49 @@ export default class SpxGuysSignupPhonePage extends Component {
     nextstepPress() {
 		if (this.nextstep) {
 			this.userInfo.signupAccType = this.accType;
+			let signupAcc = "";
 			if (GuysConstants.SignupPhoneNo == this.accType) {
 				// 手机号码注册
-				// 判断手机号是否已注册
 				this.userInfo.phoneNo = this.phonenumber.value();
-				// 跳转到下一个界面
-				this.props.router.push(ViewPage.spxGuysSignupCaptchaPage(), { userInfo: this.userInfo });
+				signupAcc = this.userInfo.phoneNo;
 			} else if (GuysConstants.SignupEmail == this.accType) {
 				// 邮箱注册
 				this.userInfo.emial = this.phonenumber.value();
-				// 跳转到下一个界面
-				this.props.router.push(ViewPage.spxGuysSignupCaptchaPage(), { userInfo: this.userInfo });
+				signupAcc = this.userInfo.emial;
 			} else {
 				// 失败
 				alert('非法操作');
+				return;
 			}
+			// 判断手机号或邮箱是否已注册
+			this.props.spxGuysAction.signupAccValid({
+				reqInfo: signupAcc,
+				resolved: (data)=>{
+					if (ResultCode.SUCCESS == data.resultCode) {
+						if (GuysConstants.AccNotExisted == data.repData) {
+							// 账号可用
+							// 跳转到下一个界面
+							this.props.router.push(ViewPage.spxGuysSignupCaptchaPage(), { userInfo: this.userInfo });
+						} else if(GuysConstants.AccExisted == data.repData) {
+							// 账号已注册
+							if (GuysConstants.SignupPhoneNo == this.accType) {
+								Toast.show("此手机号码已注册，可尝试登录。");
+							} else if (GuysConstants.SignupEmail == this.accType) {
+								Toast.show("此邮箱已注册，可尝试登录。");
+							}
+						} else {
+							// 失败
+							Toast.show("账号验证失败，请稍后重试");
+						}
+					} else {
+						// 失败
+						Toast.show("账号验证失败，请稍后重试");
+					}
+				},
+				rejected: (data)=>{
+					Toast.show("账号验证失败，请稍后重试");
+				}
+			});
 		} else {
 			// 不做处理
 		}
@@ -193,6 +226,13 @@ export default class SpxGuysSignupPhonePage extends Component {
         );
     }
 }
+
+export default connect((state, props) => ({
+}), dispatch => ({
+	spxGuysAction : bindActionCreators(SpxGuysAction, dispatch)
+}), null, {
+	withRef: true
+})(SpxGuysSignupPhonePage);
 
 const styles = StyleSheet.create({
     container: {

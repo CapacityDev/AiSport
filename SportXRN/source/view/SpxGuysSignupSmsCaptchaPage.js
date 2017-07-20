@@ -78,32 +78,31 @@ class SpxGuysSignupSmsCaptchaPage extends Component {
     		this.smsCaptchaReqInfo.inText = this.userInfo.smsCaptcha;
     		// 校验短信验证码
     		this.props.spxGuysAction.validGuysRegSmsCaptcha({
-          reqInfo: this.smsCaptchaReqInfo,
-          resolved: (data)=>{
-            console.info('dfasdfds');
-            if (ResultCode.SUCCESS == data.resultCode) {
-              // 短信验证码校验成功
-              // 跳转到密码输入界面
-              this.userInfo.ck = data.cacheKey;// 用户注册校验信息缓存key
-              this.props.router.push(ViewPage.spxGuysSignupPasswordPage(), { userInfo: this.userInfo });
-            } else {
-              // 短信验证码验证失败
-              this.setState({ smscaptcha: '' });
-              this.captchaisright = false;
-              this.updateNextState();
-              Toast.show("短信验证码验证失败，请重试");
-            }
-          },
-          rejected: (data)=>{
-            // 短信验证码发送失败，提示
-            this.setState({ smscaptcha: '' });
-            this.captchaisright = false;
-            this.updateNextState();
-            Toast.show("短信验证码验证失败，请重试");
-          }
-        });
+				reqInfo: this.smsCaptchaReqInfo,
+				resolved: (data)=>{
+					if (ResultCode.SUCCESS == data.resultCode) {
+						// 短信验证码校验成功
+						// 跳转到密码输入界面
+						this.userInfo.ck = data.cacheKey;// 用户注册校验信息缓存key
+						this.props.router.push(ViewPage.spxGuysSignupPasswordPage(), { userInfo: this.userInfo });
+					} else {
+						// 短信验证码验证失败
+						this.setState({ smscaptcha: '' });
+						this.captchaisright = false;
+						this.updateNextState();
+						Toast.show("短信验证码验证失败，请重试");
+					}
+				},
+				rejected: (data)=>{
+					// 短信验证码发送失败，提示
+					this.setState({ smscaptcha: '' });
+					this.captchaisright = false;
+					this.updateNextState();
+					Toast.show("短信验证码验证失败，请重试");
+				}
+			});
       } else {
-        // 不做处理
+		// 不做处理
       }
     }
 

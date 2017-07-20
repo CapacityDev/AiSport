@@ -52,6 +52,7 @@ export const SPX_GET_USER_SALT = "SPX_GET_USER_SALT";
 export const SPX_GET_USER_NO_SALT = "SPX_GET_USER_NO_SALT";
 export const SPX_GET_GUYS_REG_SMS_CAPTCHA = "SPX_GET_GUYS_REG_SMS_CAPTCHA";// 获取用户注册短信验证码
 export const SPX_VALID_GUYS_REG_SMS_CAPTCHA = "SPX_VALID_GUYS_REG_SMS_CAPTCHA";// 校验短信验证码
+export const SPX_SIGNUP_ACC_VALID = "SPX_SIGNUP_ACC_VALID";// 注册时，用户账号校验
 export const SPX_GUYS_REGIST = "SPX_GUYS_REGIST";
 
 // spx common

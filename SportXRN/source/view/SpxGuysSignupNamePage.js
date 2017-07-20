@@ -35,7 +35,7 @@ export default class SpxGuysSignupNamePage extends Component {
 	
 	componentDidMount() {
 		// 输入框聚焦
-		this.firstname.focus();
+		//this.firstname.focus();
 		
 		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
 		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);

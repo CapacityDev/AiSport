@@ -58,6 +58,20 @@ export const validGuysRegSmsCaptcha = createAction(
   }
 );
 
+// 注册时，登录账号校验
+export const signupAccValid = createAction(
+	types.SPX_SIGNUP_ACC_VALID,
+	async({reqInfo})=> {
+		return await guysService.signupAccValid(reqInfo);
+	},
+	({resolved, rejected})=> {
+		return {
+			resolved,
+			rejected
+		}
+	}
+);
+
 // 用户注册
 export const guysRegist = createAction(
   types.SPX_GUYS_REGIST,
