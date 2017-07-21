@@ -19,6 +19,7 @@ import VisibleView from '../component/SpxVisibleView';
 import * as ResultCode from '../constant/ResultCode';
 import * as GuysConstants from '../constant/GuysConstants';
 import * as SpxGuysAction from '../action/SpxGuys';
+import * as ValidUtil from '../util/validutil';
 
 class SpxGuysSignupPhonePage extends Component {
     constructor(props){
@@ -57,21 +58,25 @@ class SpxGuysSignupPhonePage extends Component {
         .forEach(({ name, ref }) => {
           if (ref) {
             if (ref.isFocused()) {
-              this.setState({ [name]: text });
-              if ('' != text) {
-                if ('phonenumber' == name) {
-                  if ( 11 == text.length ) {
-                    this[name + 'isright'] = true;
-                  } else {
-                    this[name + 'isright'] = false;
-                  }
-                } else if ('email' == name) {
-                  this[name + 'isright'] = true;
-                }
-              } else {
-                this[name + 'isright'] = false;
-              }
-              this.updateNextState();
+				this.setState({ [name]: text });
+				if ('' != text) {
+					if ('phonenumber' == name) {
+						if (ValidUtil.valid(text, 1)) {
+							this[name + 'isright'] = true;
+						} else {
+							this[name + 'isright'] = false;
+						}
+					} else if ('email' == name) {
+						if (ValidUtil.valid(text, 3)) {
+							this[name + 'isright'] = true;
+						} else {
+							this[name + 'isright'] = false;
+						}
+					}
+				} else {
+					this[name + 'isright'] = false;
+				}
+				this.updateNextState();
             }
           }
         });
@@ -81,19 +86,19 @@ class SpxGuysSignupPhonePage extends Component {
     }
 
     updateNextState() {
-      var validRes = false;// 校验结果，true-合法，false-非法
-      if (this.phonenumberisright || this.emailisright) {
-        validRes = true;
-      }
-      if (validRes) {
-        // 启用下一步按钮
-        this.setState({ nextstepbtncolor: 'rgb(255, 255, 255)' });
-        this.nextstep = true;
-      } else {
-        // 禁用下一步按钮
-        this.setState({ nextstepbtncolor: theme.actionBar.backgroundColorThin });
-        this.nextstep = false;
-      }
+		var validRes = false;// 校验结果，true-合法，false-非法
+		if (this.phonenumberisright || this.emailisright) {
+			validRes = true;
+		}
+		if (validRes) {
+			// 启用下一步按钮
+			this.setState({ nextstepbtncolor: 'rgb(255, 255, 255)' });
+			this.nextstep = true;
+		} else {
+			// 禁用下一步按钮
+			this.setState({ nextstepbtncolor: theme.actionBar.backgroundColorThin });
+			this.nextstep = false;
+		}
     }
 
     updateRef(name, ref) {
@@ -152,17 +157,25 @@ class SpxGuysSignupPhonePage extends Component {
     }
 
     prevstepPress() {
-      this.props.router.pop();
+		this.props.router.pop();
     }
 
     useEmailRegPress() {
-      this.setState({ phonevisible: false,  emailvisible: true });
-	  this.accType = GuysConstants.SignupEmail;// 注册账号类型：1-手机号码，2-邮箱
+		this.setState({ phonevisible: false,  emailvisible: true });
+		this.accType = GuysConstants.SignupEmail;// 注册账号类型：1-手机号码，2-邮箱
+		// 清空手机号码输入框
+		this.state.phonenumber = "";
+		this.phonenumberisright = false;
+		this.updateNextState();
     }
 
     usePhoneRegPress() {
-      this.setState({ phonevisible: true,  emailvisible: false });
-	  this.accType = GuysConstants.SignupPhoneNo;// 注册账号类型：1-手机号码，2-邮箱
+		this.setState({ phonevisible: true,  emailvisible: false });
+		this.accType = GuysConstants.SignupPhoneNo;// 注册账号类型：1-手机号码，2-邮箱
+		// 清空邮箱输入框
+		this.state.email = "";
+		this.emailisright = false;
+		this.updateNextState();
     }
 
     render(){
@@ -176,51 +189,56 @@ class SpxGuysSignupPhonePage extends Component {
                     <VisibleView visible={data.phonevisible}>
                         <Text style={styles.text}>您的电话号码是？</Text>
                         <TextField
-                                  textColor='rgb(255, 255, 255)'
-                                  tintColor='rgb(255, 255, 255)'
-                                  baseColor='rgb(255, 255, 255)'
-                                  fontSize={px2dp(20)}
-                                  ref={this.phonenumberRef}
-                                  value={data.phonenumber}
-                                  autoCorrect={false}
-                                  enablesReturnKeyAutomatically={true}
-                                  returnKeyType='next'
-                                  label='电话'
-                                  onChangeText={this.onChangeText}
+							textColor='rgb(255, 255, 255)'
+							tintColor='rgb(255, 255, 255)'
+							baseColor='rgb(255, 255, 255)'
+							fontSize={px2dp(20)}
+							ref={this.phonenumberRef}
+							value={data.phonenumber}
+							autoCorrect={false}
+							enablesReturnKeyAutomatically={true}
+							returnKeyType='next'
+							label='电话'
+							onChangeText={this.onChangeText}
                         />
+                        <Button
+							containerStyle={{marginTop: px2dp(10), width: px2dp(105), height: px2dp(25), borderRadius:4}}
+							onPress={() => this.useEmailRegPress()}>
+                            <Text style={{fontSize: px2dp(15), color: 'white', textDecorationLine: 'underline', textDecorationStyle: 'solid', textDecorationColor: 'white'}}>使用邮箱注册</Text>
+                        </Button>
                     </VisibleView>
                     <VisibleView visible={data.emailvisible}>
                         <Text style={styles.text}>您的邮箱是？</Text>
                         <TextField
-                                  textColor='rgb(255, 255, 255)'
-                                  tintColor='rgb(255, 255, 255)'
-                                  baseColor='rgb(255, 255, 255)'
-                                  fontSize={px2dp(20)}
-                                  ref={this.emailRef}
-                                  value={data.email}
-                                  autoCorrect={false}
-                                  enablesReturnKeyAutomatically={true}
-                                  returnKeyType='next'
-                                  label='邮箱'
-                                  onChangeText={this.onChangeText}
+							textColor='rgb(255, 255, 255)'
+							tintColor='rgb(255, 255, 255)'
+							baseColor='rgb(255, 255, 255)'
+							fontSize={px2dp(20)}
+							ref={this.emailRef}
+							value={data.email}
+							autoCorrect={false}
+							enablesReturnKeyAutomatically={true}
+							returnKeyType='next'
+							label='邮箱'
+							onChangeText={this.onChangeText}
                         />
                         <Button
-                              containerStyle={{marginTop: px2dp(10), width: px2dp(105), height: px2dp(25), borderRadius:4}}
-                              onPress={() => this.usePhoneRegPress()}>
+							containerStyle={{marginTop: px2dp(10), width: px2dp(105), height: px2dp(25), borderRadius:4}}
+							onPress={() => this.usePhoneRegPress()}>
                             <Text style={{fontSize: px2dp(15), color: 'white', textDecorationLine: 'underline', textDecorationStyle: 'solid', textDecorationColor: 'white'}}>使用手机注册</Text>
                         </Button>
                     </VisibleView>
                   </View>
                 </ScrollView>
                 <ActionButton
-                            ref={this.nextstepbtnRef}
-                            buttonColor={data.nextstepbtncolor}
-                            active={true}
-                            degrees={0}
-                            hideShadow={true}
-                            useNativeFeedback={false}
-                            icon={<Icon name="ios-arrow-forward" style={styles.actionButtonIcon} />}
-                            onPress={this.nextstepPress}>
+					ref={this.nextstepbtnRef}
+					buttonColor={data.nextstepbtncolor}
+					active={true}
+					degrees={0}
+					hideShadow={true}
+					useNativeFeedback={false}
+					icon={<Icon name="ios-arrow-forward" style={styles.actionButtonIcon} />}
+					onPress={this.nextstepPress}>
                 </ActionButton>
             </View>
         );
