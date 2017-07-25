@@ -77,7 +77,9 @@ export default  {
 		usernosalt: "user/signup/obtainSigninNameSolt.action",
 		usernoValid: "user/signup/usernoValid.action",
 		getGuysRegSmsCaptcha: "captcha/obtainSmsCaptcha.action",// 获取用户注册短信验证码请求
+		getGuysRegEmlCaptcha: "captcha/obtainEmailCaptcha.action",// 获取用户注册邮箱验证码请求
 		validGuysRegSmsCaptcha: "captcha/validSmsCaptcha.action",// 校验用户注册短信验证码请求
+		validGuysRegEmlCaptcha: "captcha/validEmailCaptcha.action",// 校验用户注册邮箱验证码请求
 		guysRegist: "user/signup/signup.action"
 	},
 	spxCipher: {

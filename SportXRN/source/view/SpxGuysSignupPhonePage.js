@@ -115,8 +115,8 @@ class SpxGuysSignupPhonePage extends Component {
 				signupAcc = this.userInfo.phoneNo;
 			} else if (GuysConstants.SignupEmail == this.accType) {
 				// 邮箱注册
-				this.userInfo.emial = this.phonenumber.value();
-				signupAcc = this.userInfo.emial;
+				this.userInfo.email = this.email.value();
+				signupAcc = this.userInfo.email;
 			} else {
 				// 失败
 				alert('非法操作');

@@ -44,11 +44,39 @@ export const getGuysRegSmsCaptcha = createAction(
   }
 );
 
+// 获取用户注册邮件验证码
+export const getGuysRegEmlCaptcha = createAction(
+  types.SPX_GET_GUYS_REG_EML_CAPTCHA,
+  async({reqInfo})=> {
+    return await guysService.getGuysRegEmlCaptcha(reqInfo);
+  },
+  ({resolved, rejected})=> {
+    return {
+      resolved,
+      rejected
+    }
+  }
+);
+
 // 校验用户注册短信验证码
 export const validGuysRegSmsCaptcha = createAction(
-  types.SPX_VALID_GUYS_REG_SMS_CAPTCHA,
+  types.SPX_VALID_GUYS_REG_EML_CAPTCHA,
   async({reqInfo})=> {
     return await guysService.validGuysRegSmsCaptcha(reqInfo);
+  },
+  ({resolved, rejected})=> {
+    return {
+      resolved,
+      rejected
+    }
+  }
+);
+
+// 校验用户注册邮箱验证码
+export const validGuysRegEmlCaptcha = createAction(
+  types.SPX_VALID_GUYS_REG_SMS_CAPTCHA,
+  async({reqInfo})=> {
+    return await guysService.validGuysRegEmlCaptcha(reqInfo);
   },
   ({resolved, rejected})=> {
     return {

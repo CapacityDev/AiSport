@@ -15,6 +15,7 @@ import theme from '../config/theme';
 import ViewPage from '../component/view';
 import NavigationBar from '../component/SpxSimpleNavigationBar';
 import * as ResultCode from '../constant/ResultCode';
+import * as GuysConstants from '../constant/GuysConstants';
 import * as SpxGuysAction from '../action/SpxGuys';
 
 class SpxGuysSignupSmsCaptchaPage extends Component {
@@ -34,10 +35,8 @@ class SpxGuysSignupSmsCaptchaPage extends Component {
         this.smscaptchaisright = false;// 姓氏是否合法：true-合法，false-非法
         this.nextstep = false;// 是否可点击下一步：true-是，false-否
 
-    		this.userInfo = props.userInfo;// 用户信息对象，用于界面之间数据交互
-    		this.smsCaptchaReqInfo = {};// 校验短信验证码请求对象，cacheKey、inText、mobile
-    		this.smsCaptchaReqInfo.mobile = this.userInfo.phoneNo;// 手机号码
-    		this.smsCaptchaReqInfo.cacheKey = this.userInfo.smsCacheKey;// 短信验证码缓存key
+		this.userInfo = props.userInfo;// 用户信息对象，用于界面之间数据交互
+		this.smsCaptchaReqInfo = {};// 校验短信验证码请求对象，cacheKey、inText、mobile
     }
 
     onChangeText(text) {
@@ -73,37 +72,77 @@ class SpxGuysSignupSmsCaptchaPage extends Component {
     }
 
     nextstepPress() {
-      if (this.nextstep) {
-    		this.userInfo.smsCaptcha = this.smscaptcha.value();
-    		this.smsCaptchaReqInfo.inText = this.userInfo.smsCaptcha;
-    		// 校验短信验证码
-    		this.props.spxGuysAction.validGuysRegSmsCaptcha({
-				reqInfo: this.smsCaptchaReqInfo,
-				resolved: (data)=>{
-					if (ResultCode.SUCCESS == data.resultCode) {
-						// 短信验证码校验成功
-						// 跳转到密码输入界面
-						this.userInfo.ck = data.cacheKey;// 用户注册校验信息缓存key
-						this.props.router.push(ViewPage.spxGuysSignupPasswordPage(), { userInfo: this.userInfo });
-					} else {
-						// 短信验证码验证失败
+		if (this.nextstep) {
+			if (GuysConstants.SignupPhoneNo == this.userInfo.signupAccType) {
+				// 手机号码注册
+				this.smsCaptchaReqInfo.mobile = this.userInfo.phoneNo;// 手机号码
+				this.smsCaptchaReqInfo.cacheKey = this.userInfo.smsCacheKey;// 短信验证码缓存key
+				
+				this.userInfo.smsCaptcha = this.smscaptcha.value();
+				this.smsCaptchaReqInfo.inText = this.userInfo.smsCaptcha;
+				// 校验短信验证码
+				this.props.spxGuysAction.validGuysRegSmsCaptcha({
+					reqInfo: this.smsCaptchaReqInfo,
+					resolved: (data)=>{
+						if (ResultCode.SUCCESS == data.resultCode) {
+							// 短信验证码校验成功
+							// 跳转到密码输入界面
+							this.userInfo.ck = data.cacheKey;// 用户注册校验信息缓存key
+							this.props.router.push(ViewPage.spxGuysSignupPasswordPage(), { userInfo: this.userInfo });
+						} else {
+							// 短信验证码验证失败
+							this.setState({ smscaptcha: '' });
+							this.captchaisright = false;
+							this.updateNextState();
+							Toast.show("短信验证码验证失败，请重试");
+						}
+					},
+					rejected: (data)=>{
+						// 短信验证码发送失败，提示
 						this.setState({ smscaptcha: '' });
 						this.captchaisright = false;
 						this.updateNextState();
 						Toast.show("短信验证码验证失败，请重试");
 					}
-				},
-				rejected: (data)=>{
-					// 短信验证码发送失败，提示
-					this.setState({ smscaptcha: '' });
-					this.captchaisright = false;
-					this.updateNextState();
-					Toast.show("短信验证码验证失败，请重试");
-				}
-			});
-      } else {
+				});
+			} else if (GuysConstants.SignupEmail == this.userInfo.signupAccType) {
+				// 邮箱注册
+				this.smsCaptchaReqInfo.email = this.userInfo.email;// 邮箱
+				this.smsCaptchaReqInfo.cacheKey = this.userInfo.emlCacheKey;// 邮件验证码缓存key
+				
+				this.userInfo.emlCaptcha = this.smscaptcha.value();
+				this.smsCaptchaReqInfo.inText = this.userInfo.emlCaptcha;
+				// 校验邮箱验证码
+				this.props.spxGuysAction.validGuysRegEmlCaptcha({
+					reqInfo: this.smsCaptchaReqInfo,
+					resolved: (data)=>{
+						if (ResultCode.SUCCESS == data.resultCode) {
+							// 短信验证码校验成功
+							// 跳转到密码输入界面
+							this.userInfo.ck = data.cacheKey;// 用户注册校验信息缓存key
+							this.props.router.push(ViewPage.spxGuysSignupPasswordPage(), { userInfo: this.userInfo });
+						} else {
+							// 短信验证码验证失败
+							this.setState({ smscaptcha: '' });
+							this.captchaisright = false;
+							this.updateNextState();
+							Toast.show("验证失败，请重试");
+						}
+					},
+					rejected: (data)=>{
+						// 短信验证码发送失败，提示
+						this.setState({ smscaptcha: '' });
+						this.captchaisright = false;
+						this.updateNextState();
+						Toast.show("验证失败，请重试");
+					}
+				});
+			} else {
+				Toast.show("非法操作");
+			}
+		} else {
 		// 不做处理
-      }
+		}
     }
 
     prevstepPress() {
@@ -122,7 +161,7 @@ class SpxGuysSignupSmsCaptchaPage extends Component {
                 <NavigationBar title="" backOnPress={() => this.prevstepPress()}/>
                 <ScrollView>
                     <View style={styles.content}>
-                        <Text style={styles.text}>您收到的短信验证码是？</Text>
+                        <Text style={styles.text}>您收到的验证码是？</Text>
                         <TextField
                                   textColor='rgb(255, 255, 255)'
                                   tintColor='rgb(255, 255, 255)'
@@ -133,7 +172,7 @@ class SpxGuysSignupSmsCaptchaPage extends Component {
                                   autoCorrect={false}
                                   enablesReturnKeyAutomatically={true}
                                   returnKeyType='next'
-                                  label='请输入短信验证码'
+                                  label='请输入证码'
                                   onChangeText={this.onChangeText}
                         />
                     </View>

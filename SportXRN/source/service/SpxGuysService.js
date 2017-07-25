@@ -8,6 +8,7 @@ import * as StringUtil from '../util/stringutil';
 import * as DataTrans from '../util/datatrans';
 import * as Encrypt from '../util/encrypt';
 import * as UUID from '../util/uuid';
+import * as GuysConstants from '../constant/GuysConstants';
 import * as SpxCipherService from './SpxCipherService';
 
 // 获取登录用户名加密hash盐
@@ -123,6 +124,55 @@ export function getGuysRegSmsCaptcha(reqInfo) {
   });
 }
 
+// 获取用户注册邮件验证码
+export function getGuysRegEmlCaptcha(reqInfo) {
+  // TODO 数据校验
+  // 将数据转成json字符串
+  let jsonData = JSON.stringify(reqInfo);
+  return new Promise(function(resolve, reject){
+    // 使用用rsa公钥加密 aes密钥
+    // 获取rsa公钥
+    SpxCipherService.getRSAPublicKey().then(function (data){
+      // 获取rsa公钥成功
+      let rsaPubKey = data.repData.publicKey;// 公钥
+      let cacheKey = data.repData.cacheKey;// 对应缓存key
+      // 对数据进行aes加密
+      let encryptedObj = Encrypt.encryptAESGenerateSK(jsonData);
+      if (encryptedObj.success) {
+        // 加密成功
+        // 使用rsa公钥对aes密钥加密
+        let aesKey = Encrypt.encryptRSAByPubKey(rsaPubKey, encryptedObj.sk);
+        let sendObj = {};
+        DataTrans.concatSendObjByObj(sendObj, {
+          jsonData: encryptedObj.encryptedData,
+          sk: aesKey,
+          ck: cacheKey
+        }, 'cipherReqData');
+        let formData = new FormData();
+        let proptNames = Object.keys(sendObj);
+        for (let i=0; i<proptNames.length; i++) {
+          formData.append(proptNames[i], sendObj[proptNames[i]]);
+        }
+        let headers = {
+          'Content-type': 'multipart/form-data'
+        };
+        let fetchApi = dataApi.spxGuys.getGuysRegEmlCaptcha;
+        requestService.post(fetchApi, formData, headers).then(function (data){
+          resolve(data);
+        }, function (data){
+          reject(data);
+        });
+      } else {
+        // 加密失败
+        reject('数据加密失败');
+      }
+    }, function (data){
+      // 获取rsa公钥失败
+      reject(data);
+    });
+  });
+}
+
 // 校验用户注册短信验证码
 export function validGuysRegSmsCaptcha(reqInfo) {
   // TODO 数据校验
@@ -172,6 +222,55 @@ export function validGuysRegSmsCaptcha(reqInfo) {
   });
 }
 
+// 校验用户注册邮箱验证码
+export function validGuysRegEmlCaptcha(reqInfo) {
+  // TODO 数据校验
+  // 将数据转成json字符串
+  let jsonData = JSON.stringify(reqInfo);
+  return new Promise(function(resolve, reject){
+    // 使用用rsa公钥加密 aes密钥
+    // 获取rsa公钥
+    SpxCipherService.getRSAPublicKey().then(function (data){
+      // 获取rsa公钥成功
+      let rsaPubKey = data.repData.publicKey;// 公钥
+      let cacheKey = data.repData.cacheKey;// 对应缓存key
+      // 对数据进行aes加密
+      let encryptedObj = Encrypt.encryptAESGenerateSK(jsonData);
+      if (encryptedObj.success) {
+        // 加密成功
+        // 使用rsa公钥对aes密钥加密
+        let aesKey = Encrypt.encryptRSAByPubKey(rsaPubKey, encryptedObj.sk);
+        let sendObj = {};
+        DataTrans.concatSendObjByObj(sendObj, {
+          jsonData: encryptedObj.encryptedData,
+          sk: aesKey,
+          ck: cacheKey
+        }, 'cipherReqData');
+        let formData = new FormData();
+        let proptNames = Object.keys(sendObj);
+        for (let i=0; i<proptNames.length; i++) {
+          formData.append(proptNames[i], sendObj[proptNames[i]]);
+        }
+        let headers = {
+          'Content-type': 'multipart/form-data'
+        };
+        let fetchApi = dataApi.spxGuys.validGuysRegEmlCaptcha;
+        requestService.post(fetchApi, formData, headers).then(function (data){
+          resolve(data);
+        }, function (data){
+          reject(data);
+        });
+      } else {
+        // 加密失败
+        reject('数据加密失败');
+      }
+    }, function (data){
+      // 获取rsa公钥失败
+      reject(data);
+    });
+  });
+}
+
 // 用户注册
 export function guysRegist(userInfo) {
 
@@ -198,11 +297,21 @@ export function guysRegist(userInfo) {
         reject('名字可能没有填写，请确认一下。');
       });
     }
-    if (!StringUtil.isEmpty(userInfo.phoneNo)) {
-      return new Promise((resolve, reject) => {
-        reject('电话可能没有填写，请确认一下。');
-      });
-    }
+	if (GuysConstants.SignupPhoneNo == userInfo.signupAccType) {
+		// 手机号码注册
+		if (!StringUtil.isEmpty(userInfo.phoneNo)) {
+		  return new Promise((resolve, reject) => {
+			reject('电话可能没有填写，请确认一下。');
+		  });
+		}
+	} else if (GuysConstants.SignupEmail == userInfo.signupAccType) {
+		// 邮箱注册
+		if (!StringUtil.isEmpty(userInfo.email)) {
+		  return new Promise((resolve, reject) => {
+			reject('邮箱可能没有填写，请确认一下。');
+		  });
+		}
+	}
     userInfo.signinPwd = Encrypt.encryptPBKDF2(userInfo.signinPwd, userInfo.encryptionSalt);// 对密码加密
   }
   // 将数据转成json字符串

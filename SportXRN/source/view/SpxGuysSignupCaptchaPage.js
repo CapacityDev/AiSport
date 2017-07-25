@@ -19,6 +19,7 @@ import VisibleView from '../component/SpxVisibleView';
 import { StyleConfig } from '../style';
 import * as imgsconstant from '../image/imgsconstant';
 import * as ResultCode from '../constant/ResultCode';
+import * as GuysConstants from '../constant/GuysConstants';
 import * as SpxCommonAction from '../action/SpxCommon';
 import * as SpxGuysAction from '../action/SpxGuys';
 
@@ -46,7 +47,6 @@ class SpxGuysSignupCaptchaPage extends Component {
 
         this.userInfo = props.userInfo;// 用户信息对象，用于界面之间数据交互
         this.smsCaptchaReqInfo = {};// 短信验证码请求对象，cacheKey、inText、mobile
-        this.smsCaptchaReqInfo.mobile = this.userInfo.phoneNo;
         this.smsCaptchaReqInfo.cacheKey = '';
     }
 
@@ -144,33 +144,68 @@ class SpxGuysSignupCaptchaPage extends Component {
     nextstepPress() {
 		if (this.nextstep) {
 			this.smsCaptchaReqInfo.inText = this.captcha.value();
-			// 发送短信验证码请求
-			this.props.spxGuysAction.getGuysRegSmsCaptcha({
-				reqInfo: this.smsCaptchaReqInfo,
-				resolved: (data)=>{
-					if (ResultCode.SUCCESS == data.resultCode) {
-						// 发送短信验证码成功
-						// 跳转到短信验证码输入界面
-						this.userInfo.smsCacheKey = data.cacheKey;
-						this.props.router.push(ViewPage.spxGuysSignupSmsCaptchaPage(), { userInfo: this.userInfo });
-					} else {
+			if (GuysConstants.SignupPhoneNo == this.userInfo.signupAccType) {
+				// 发送短信验证码请求
+				this.smsCaptchaReqInfo.mobile = this.userInfo.phoneNo;
+				this.props.spxGuysAction.getGuysRegSmsCaptcha({
+					reqInfo: this.smsCaptchaReqInfo,
+					resolved: (data)=>{
+						if (ResultCode.SUCCESS == data.resultCode) {
+							// 发送短信验证码成功
+							// 跳转到短信验证码输入界面
+							this.userInfo.smsCacheKey = data.cacheKey;
+							this.props.router.push(ViewPage.spxGuysSignupSmsCaptchaPage(), { userInfo: this.userInfo });
+						} else {
+							// 短信验证码发送失败，提示，清除图形验证码输入框中的内容，重新获取图形验证码
+							this.setState({ captcha: '' });
+							this.captchaisright = false;
+							this.updateNextState();
+							this.getPicCaptcha();
+							Toast.show("发送验证码失败，请重试");
+						}
+					},
+					rejected: (data)=>{
 						// 短信验证码发送失败，提示，清除图形验证码输入框中的内容，重新获取图形验证码
 						this.setState({ captcha: '' });
 						this.captchaisright = false;
 						this.updateNextState();
 						this.getPicCaptcha();
-						Toast.show("发送短信验证码失败，请重试");
+						Toast.show("发送验证码失败，请重试");
 					}
-				},
-				rejected: (data)=>{
-					// 短信验证码发送失败，提示，清除图形验证码输入框中的内容，重新获取图形验证码
-					this.setState({ captcha: '' });
-					this.captchaisright = false;
-					this.updateNextState();
-					this.getPicCaptcha();
-					Toast.show("发送短信验证码失败，请重试");
-				}
-			});
+				});
+			} else if (GuysConstants.SignupEmail == this.userInfo.signupAccType) {
+				// 发送邮件验证码请求
+				this.smsCaptchaReqInfo.email = this.userInfo.email;
+				this.props.spxGuysAction.getGuysRegEmlCaptcha({
+					reqInfo: this.smsCaptchaReqInfo,
+					resolved: (data)=>{
+						if (ResultCode.SUCCESS == data.resultCode) {
+							// 发送邮件验证码成功
+							// 跳转到邮件验证码输入界面
+							this.userInfo.emlCacheKey = data.cacheKey;
+							this.props.router.push(ViewPage.spxGuysSignupSmsCaptchaPage(), { userInfo: this.userInfo });
+						} else {
+							// 验证码发送失败，提示，清除图形验证码输入框中的内容，重新获取图形验证码
+							this.setState({ captcha: '' });
+							this.captchaisright = false;
+							this.updateNextState();
+							this.getPicCaptcha();
+							Toast.show("发送验证码失败，请重试");
+						}
+					},
+					rejected: (data)=>{
+						// 验证码发送失败，提示，清除图形验证码输入框中的内容，重新获取图形验证码
+						this.setState({ captcha: '' });
+						this.captchaisright = false;
+						this.updateNextState();
+						this.getPicCaptcha();
+						Toast.show("发送验证码失败，请重试");
+					}
+				});
+			} else {
+				// 不做处理
+				Toast.show("非法操作");
+			}
 		} else {
 			// 不做处理
 		}
