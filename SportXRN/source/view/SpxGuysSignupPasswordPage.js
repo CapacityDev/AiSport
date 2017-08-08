@@ -175,31 +175,29 @@ class SpxGuysSignupPasswordPage extends Component {
     return(
       <View style={styles.container}>
         <NavigationBar title="" backOnPress={() => this.prevstepPress()}/>
-        <ScrollView>
-          <View visible={data.phonevisible} style={styles.content}>
-            <Text style={styles.text}>设置密码</Text>
-            <TextField
-              textColor='rgb(255, 255, 255)'
-              tintColor='rgb(255, 255, 255)'
-              baseColor='rgb(255, 255, 255)'
-              fontSize={px2dp(20)}
-              ref={this.passwordRef}
-              value={data.password}
-              secureTextEntry={data.secureTextEntry}
-              autoCapitalize='none'
-              autoCorrect={false}
-              enablesReturnKeyAutomatically={true}
-              onChangeText={this.onChangeText}
-              returnKeyType='done'
-              label='密码'
-              title=''
-              maxLength={30}
-              characterRestriction={20}
-              renderAccessory={this.renderPasswordAccessory}
-              />
-            <Text style={styles.text}>{data.message}</Text>
-          </View>
-        </ScrollView>
+        <View visible={data.phonevisible} style={styles.content}>
+          <Text style={styles.text}>设置密码</Text>
+          <TextField
+            textColor='rgb(255, 255, 255)'
+            tintColor='rgb(255, 255, 255)'
+            baseColor='rgb(255, 255, 255)'
+            fontSize={px2dp(20)}
+            ref={this.passwordRef}
+            value={data.password}
+            secureTextEntry={data.secureTextEntry}
+            autoCapitalize='none'
+            autoCorrect={false}
+            enablesReturnKeyAutomatically={true}
+            onChangeText={this.onChangeText}
+            returnKeyType='done'
+            label='密码'
+            title=''
+            maxLength={30}
+            characterRestriction={20}
+            renderAccessory={this.renderPasswordAccessory}
+            />
+          <Text style={styles.text}>{data.message}</Text>
+        </View>
         <ActionButton
           ref={this.nextstepbtnRef}
           buttonColor={data.nextstepbtncolor}

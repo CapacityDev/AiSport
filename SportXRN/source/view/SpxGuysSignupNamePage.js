@@ -139,37 +139,35 @@ export default class SpxGuysSignupNamePage extends Component {
     return(
       <View style={styles.container}>
         <NavigationBar title="" backOnPress={() => this.prevstepPress()}/>
-        <ScrollView>
-          <View style={styles.content}>
-            <Text style={styles.text}>您叫什么名字？</Text>
-            <TextField
-              textColor='rgb(255, 255, 255)'
-              tintColor='rgb(255, 255, 255)'
-              baseColor='rgb(255, 255, 255)'
-              fontSize={px2dp(20)}
-              ref={this.firstnameRef}
-              value={data.firstname}
-              autoCorrect={false}
-              enablesReturnKeyAutomatically={true}
-              returnKeyType='next'
-              label='姓氏'
-              onChangeText={this.onChangeText}
-              />
-            <TextField
-              textColor='rgb(255, 255, 255)'
-              tintColor='rgb(255, 255, 255)'
-              baseColor='rgb(255, 255, 255)'
-              fontSize={px2dp(20)}
-              ref={this.lastnameRef}
-              value={data.lastname}
-              autoCorrect={false}
-              enablesReturnKeyAutomatically={true}
-              returnKeyType='next'
-              label='名字'
-              onChangeText={this.onChangeText}
-              />
-          </View>
-        </ScrollView>
+        <View style={styles.content}>
+          <Text style={styles.text}>您叫什么名字？</Text>
+          <TextField
+            textColor='rgb(255, 255, 255)'
+            tintColor='rgb(255, 255, 255)'
+            baseColor='rgb(255, 255, 255)'
+            fontSize={px2dp(20)}
+            ref={this.firstnameRef}
+            value={data.firstname}
+            autoCorrect={false}
+            enablesReturnKeyAutomatically={true}
+            returnKeyType='next'
+            label='姓氏'
+            onChangeText={this.onChangeText}
+            />
+          <TextField
+            textColor='rgb(255, 255, 255)'
+            tintColor='rgb(255, 255, 255)'
+            baseColor='rgb(255, 255, 255)'
+            fontSize={px2dp(20)}
+            ref={this.lastnameRef}
+            value={data.lastname}
+            autoCorrect={false}
+            enablesReturnKeyAutomatically={true}
+            returnKeyType='next'
+            label='名字'
+            onChangeText={this.onChangeText}
+            />
+        </View>
         <ActionButton
           ref={this.nextstepbtnRef}
           buttonColor={data.nextstepbtncolor}

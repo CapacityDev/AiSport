@@ -203,24 +203,22 @@ class SpxGuysSignupSmsCaptchaPage extends Component {
     return(
       <View style={styles.container}>
         <NavigationBar title="" backOnPress={() => this.prevstepPress()}/>
-        <ScrollView>
-          <View style={styles.content}>
-          <Text style={styles.text}>您收到的验证码是？</Text>
-          <TextField
-            textColor='rgb(255, 255, 255)'
-            tintColor='rgb(255, 255, 255)'
-            baseColor='rgb(255, 255, 255)'
-            fontSize={px2dp(20)}
-            ref={this.smscaptchaRef}
-            value={data.smscaptcha}
-            autoCorrect={false}
-            enablesReturnKeyAutomatically={true}
-            returnKeyType='next'
-            label='请输入证码'
-            onChangeText={this.onChangeText}
-            />
-          </View>
-        </ScrollView>
+        <View style={styles.content}>
+        <Text style={styles.text}>您收到的验证码是？</Text>
+        <TextField
+          textColor='rgb(255, 255, 255)'
+          tintColor='rgb(255, 255, 255)'
+          baseColor='rgb(255, 255, 255)'
+          fontSize={px2dp(20)}
+          ref={this.smscaptchaRef}
+          value={data.smscaptcha}
+          autoCorrect={false}
+          enablesReturnKeyAutomatically={true}
+          returnKeyType='next'
+          label='请输入证码'
+          onChangeText={this.onChangeText}
+          />
+        </View>
         <ActionButton
           ref={this.nextstepbtnRef}
           buttonColor={data.nextstepbtncolor}

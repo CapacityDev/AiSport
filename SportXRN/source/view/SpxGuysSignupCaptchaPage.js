@@ -236,34 +236,32 @@ class SpxGuysSignupCaptchaPage extends Component {
     return(
       <View style={styles.container}>
         <NavigationBar title="" backOnPress={() => this.prevstepPress()}/>
-        <ScrollView>
-          <View style={styles.content}>
-            <TouchableOpacity
-              activeOpacity={ StyleConfig.touchable_press_opacity }
-              onPress={ this.captchaPicPress }
-              >
-              <Image style={{width:px2dp(150), height:px2dp(36)}} source={{uri:data.captchaPic}}/>
-            </TouchableOpacity>
-            <TextField
-              textColor='rgb(255, 255, 255)'
-              tintColor='rgb(255, 255, 255)'
-              baseColor='rgb(255, 255, 255)'
-              fontSize={px2dp(20)}
-              ref={this.captchaRef}
-              value={data.captcha}
-              autoCorrect={false}
-              enablesReturnKeyAutomatically={true}
-              returnKeyType='next'
-              label='请输入验证码'
-              onChangeText={this.onChangeText}
-              onFocus={this.captchaInputFocus}
-              onBlur={this.captchaInputBlur}
-              />
-            <VisibleView visible={data.tipinfovisible}>
-              <Text style={{fontSize: px2dp(15), color: 'white'}}>看不清？点击图片更换验证码</Text>
-            </VisibleView>
-          </View>
-        </ScrollView>
+        <View style={styles.content}>
+          <TouchableOpacity
+            activeOpacity={ StyleConfig.touchable_press_opacity }
+            onPress={ this.captchaPicPress }
+            >
+            <Image style={{width:px2dp(150), height:px2dp(36)}} source={{uri:data.captchaPic}}/>
+          </TouchableOpacity>
+          <TextField
+            textColor='rgb(255, 255, 255)'
+            tintColor='rgb(255, 255, 255)'
+            baseColor='rgb(255, 255, 255)'
+            fontSize={px2dp(20)}
+            ref={this.captchaRef}
+            value={data.captcha}
+            autoCorrect={false}
+            enablesReturnKeyAutomatically={true}
+            returnKeyType='next'
+            label='请输入验证码'
+            onChangeText={this.onChangeText}
+            onFocus={this.captchaInputFocus}
+            onBlur={this.captchaInputBlur}
+            />
+          <VisibleView visible={data.tipinfovisible}>
+            <Text style={{fontSize: px2dp(15), color: 'white'}}>看不清？点击图片更换验证码</Text>
+          </VisibleView>
+        </View>
         <ActionButton
           ref={this.nextstepbtnRef}
           buttonColor={data.nextstepbtncolor}
