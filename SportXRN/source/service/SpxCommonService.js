@@ -3,9 +3,15 @@
  */
 import _ from 'lodash';
 import * as requestService from './request';
-import { Base64 } from '../common/base64';
+import {
+  Base64
+} from '../common/base64';
 import * as storageService from './storage';
-import { authData, storageKey, pageSize } from '../config';
+import {
+  authData,
+  storageKey,
+  pageSize
+} from '../config';
 import dataApi from '../config/api';
 import * as StringUtil from '../util/stringutil';
 import * as DataTrans from '../util/datatrans';
